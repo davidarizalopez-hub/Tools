@@ -1,0 +1,114 @@
+# Mis Finanzas
+
+App para el celular (Android o iPhone) que registra ingresos, gastos, transferencias y compromisos
+financieros en pesos colombianos. Reemplaza el Excel "Debitos" y los pantallazos de WhatsApp.
+
+Es una **PWA**: una página web que se instala en la pantalla de inicio y funciona como app, sin pasar
+por Play Store ni App Store.
+
+## Qué hace (fase 1)
+
+- **Registrar** un gasto, ingreso o transferencia en pocos toques. Los tipos de egreso y medios de
+  pago que más usas aparecen primero.
+- **Inicio**: cuánto te quedó en el mes, ingresos, gastos y tasa de ahorro; en qué se fue tu dinero
+  por tipo de egreso; fijos, variables y ahorro; comparativo de 6 meses; saldo de cada cuenta.
+- **Lo que te dicen tus números**: qué categorías se llevan tus ingresos, cuáles subieron frente a
+  tu promedio, gastos hormiga, ingresos que fueron préstamos, regla 50/30/20, 4x1000.
+- **Proyección del mes siguiente**: gastos fijos (según tus compromisos o lo que se repite), gastos
+  variables (promedio de los últimos 3 meses) e ingreso esperado.
+- **Compromisos**: créditos, cuotas de tarjeta, suscripciones y servicios, con su progreso y un botón
+  de "Registrar pago". Una compra con tarjeta a varias cuotas puede crear el compromiso sola.
+- **Catálogos**: crear, editar y archivar tipos de egreso (fijo, variable o ahorro), tipos de
+  ingreso, clientes y medios de pago.
+- **Importar el Excel** de débitos: lee las hojas por mes y la hoja "Base de datos". Si lo importas
+  dos veces no duplica nada.
+- **Respaldo**: descargar todo en .json, exportar los movimientos a .csv para Excel y restaurar.
+
+> Pagar la tarjeta de crédito se registra como **transferencia** (de tu cuenta a la tarjeta), no como
+> gasto: las compras ya se contaron como gasto el día que las hiciste. Así no se cuentan dos veces.
+
+## Puesta en marcha, paso a paso
+
+Solo necesitas dos cuentas gratuitas: **Supabase** (base de datos en la nube) y **Vercel** (publica
+la app). No hay que instalar ningún MCP para esta fase.
+
+### Paso 1. Base de datos en Supabase
+
+1. Entra a <https://supabase.com>, crea una cuenta (puedes usar GitHub) y luego **New project**.
+   - Nombre: `finanzas`. Región: la más cercana (por ejemplo *East US* o *São Paulo*).
+   - Guarda la contraseña de la base de datos en un lugar seguro.
+2. Cuando el proyecto esté listo, abre **SQL Editor > New query**, pega todo el contenido de
+   [`supabase/schema.sql`](supabase/schema.sql) y presiona **Run**. Crea las tablas y la seguridad para
+   que cada usuario vea solo sus datos.
+3. En **Authentication > Sign In / Providers > Email**, desactiva **Confirm email** para no tener que
+   confirmar el correo (opcional).
+4. En **Project Settings > API Keys** (o **Data API**) copia:
+   - la **Project URL** (`https://xxxx.supabase.co`)
+   - la **publishable key** (o `anon` key). Esta clave puede ir en la app: la seguridad la dan las
+     políticas RLS del paso 2. **Nunca** uses la `service_role` / secret key en la app.
+
+### Paso 2. Publicar la app en Vercel
+
+1. Entra a <https://vercel.com> y crea una cuenta con tu GitHub.
+2. **Add New > Project** e importa el repositorio `Tools`.
+3. En **Root Directory** elige `finanzas`. Vercel detecta Vite solo.
+4. En **Environment Variables** agrega:
+   - `VITE_SUPABASE_URL` = la Project URL
+   - `VITE_SUPABASE_ANON_KEY` = la publishable/anon key
+5. **Deploy**. Al terminar te da una dirección tipo `https://finanzas-xxxx.vercel.app`.
+
+### Paso 3. Instalarla en el celular
+
+- **Android (Chrome)**: abre la dirección, menú **⋮ > Instalar app** (o *Agregar a la pantalla
+  principal*).
+- **iPhone (Safari)**: abre la dirección, botón **Compartir > Agregar a inicio**.
+
+### Paso 4. Primer uso
+
+1. Abre la app y toca **¿Primera vez? Crea tu cuenta** con tu correo y una contraseña.
+2. Vuelve a Supabase > **Authentication > Sign In / Providers** y desactiva **Allow new users to sign
+   up**, para que nadie más pueda crear cuentas en tu app.
+3. En **Ajustes > Importar** sube tu Excel de débitos (funciona desde el celular o el computador).
+   Revisa los años marcados: la app desmarca sola los años viejos o mal digitados.
+4. En **Ajustes > Catálogos**:
+   - **Egresos**: marca cada tipo como fijo, variable o ahorro; esto mejora la proyección.
+   - **Medios**: pon el saldo que tiene hoy cada cuenta (en la tarjeta, lo que debes).
+5. En **Compromisos** agrega tus créditos, cuotas de tarjeta y suscripciones.
+
+## Desarrollo local
+
+```bash
+cd finanzas
+npm install
+cp .env.example .env.local   # opcional: sin estas variables la app guarda los datos solo en el navegador
+npm run dev                  # abre http://localhost:5173
+npm test                     # pruebas
+npm run build                # compila a dist/
+```
+
+Sin las variables de Supabase la app funciona en **modo local** (datos en el navegador). Es útil para
+probarla; luego puedes pasar esos datos a la nube con *Descargar respaldo* y *Restaurar respaldo*.
+
+## Estructura
+
+```
+finanzas/
+├── supabase/schema.sql      tablas y políticas de seguridad
+├── src/lib/
+│   ├── types.ts             modelo de datos
+│   ├── db.ts                guardado en Supabase o en el navegador
+│   ├── seed.ts              catálogos iniciales
+│   ├── stats.ts             resumen del mes, saldos, proyección y consejos
+│   └── importExcel.ts       lectura del Excel de débitos
+├── src/views/               pantallas: Inicio, Movimientos, Registrar, Compromisos, Ajustes, Catálogos
+└── src/components/          gráficos y piezas de interfaz
+```
+
+## Próximas fases
+
+| Fase | Qué agrega | Qué se necesita |
+|------|------------|-----------------|
+| 2 | **Pantallazos**: subes la foto del comprobante (Nequi, Bancolombia, Daviplata…) y la app llena el movimiento | API key de Anthropic (console.anthropic.com), guardada como secreto en una *Edge Function* de Supabase, nunca en la app |
+| 3 | **Correos de Gmail**: lee los soportes de pago de tu bandeja y los propone como movimientos para que solo los confirmes | Proyecto en Google Cloud con la Gmail API activada (OAuth, solo lectura) |
+| 4 | **Asesor de fin de mes**: un informe en lenguaje natural sobre tus hábitos y cómo optimizar el ahorro | La misma API key de la fase 2 |
+| — | Registrar sin conexión y sincronizar después | Nada adicional |
