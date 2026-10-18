@@ -1021,3 +1021,73 @@ p {
   flex-direction: column;
   gap: 14px;
 }
+
+/* ---------- Comprobantes ---------- */
+
+.cabecera-registrar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.btn.ocupado {
+  opacity: 0.6;
+}
+
+.etiquetas {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.etiquetas li {
+  font-size: 0.8rem;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--superficie-2);
+  color: var(--texto-2);
+}
+
+.etiquetas .etiqueta-alerta {
+  color: var(--texto);
+  box-shadow: inset 0 0 0 1px var(--atencion);
+}
+
+.lector-archivo {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.lector-nombre {
+  font-size: 0.85rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.borrador {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 10px;
+  border-top: 1px solid var(--borde);
+}
+
+.borrador-cerrado {
+  opacity: 0.6;
+}
+
+.borrador-cabecera {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.borrador-detalle {
+  font-size: 0.875rem;
+  overflow-wrap: anywhere;
+}

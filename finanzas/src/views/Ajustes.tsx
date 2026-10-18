@@ -2,6 +2,7 @@ import { useMemo, useState, type ChangeEvent } from 'react'
 import { useDatos } from '../state'
 import { Segmentado } from '../components/ui'
 import { Catalogos } from './Catalogos'
+import { LectorComprobantes } from '../components/LectorComprobantes'
 import { supabase } from '../lib/db'
 import { leerExcel, planificar, type Hoja as HojaExcel, type LecturaExcel } from '../lib/importExcel'
 import { TABLAS, type Datos } from '../lib/types'
@@ -25,7 +26,12 @@ export function Ajustes({ email }: { email: string | null }) {
         ]}
       />
       {seccion === 'catalogos' && <Catalogos />}
-      {seccion === 'importar' && <Importar />}
+      {seccion === 'importar' && (
+        <>
+          <Comprobantes />
+          <Importar />
+        </>
+      )}
       {seccion === 'cuenta' && <Cuenta email={email} />}
     </div>
   )
@@ -170,6 +176,42 @@ function Importar() {
           </button>
         </div>
       )}
+    </section>
+  )
+}
+
+/** Lectura de varios pantallazos o PDFs a la vez, para ponerse al día con los acumulados. */
+function Comprobantes() {
+  const { modo } = useDatos()
+  const [lote, setLote] = useState<{ id: number; archivos: File[] } | null>(null)
+
+  return (
+    <section className="pantalla-seccion">
+      <div className="tarjeta">
+        <h2>Pantallazos y comprobantes</h2>
+        <p className="sub">
+          Selecciona los pantallazos de tus pagos (los que te enviabas por WhatsApp) o los PDF de los soportes. La app lee cada uno, te muestra el movimiento y te avisa
+          si ya estaba registrado.
+        </p>
+        {modo === 'nube' ? (
+          <label className="btn btn-primario btn-grande btn-archivo">
+            Elegir pantallazos o PDF
+            <input
+              type="file"
+              accept="image/*,application/pdf"
+              multiple
+              onChange={(e) => {
+                const archivos = [...(e.target.files ?? [])]
+                e.target.value = ''
+                if (archivos.length) setLote({ id: Date.now(), archivos })
+              }}
+            />
+          </label>
+        ) : (
+          <p className="mensaje">Disponible cuando la app está conectada a Supabase.</p>
+        )}
+      </div>
+      {lote && <LectorComprobantes key={lote.id} archivos={lote.archivos} />}
     </section>
   )
 }

@@ -75,6 +75,39 @@ la app). No hay que instalar ningún MCP para esta fase.
    - **Medios**: pon el saldo que tiene hoy cada cuenta (en la tarjeta, lo que debes).
 5. En **Compromisos** agrega tus créditos, cuotas de tarjeta y suscripciones.
 
+## Fase 2: leer pantallazos y comprobantes
+
+En **Registrar** toca **📷 Leer comprobante** y elige el pantallazo o el PDF del pago. La app llena
+el formulario (valor, fecha, medio de pago, tipo de egreso, comercio y referencia) para que solo
+revises y guardes. Si eliges varios archivos a la vez, o entras a **Ajustes → Importar → Pantallazos
+y comprobantes**, la app los lee uno por uno y te muestra cada movimiento con avisos de lo que falta
+o de lo que parece repetido. Puedes guardar los completos de un toque, revisarlos o descartarlos.
+
+La lectura la hace Claude (API de Anthropic) desde una función de Supabase. La clave de la API vive
+solo en Supabase, y la app no guarda las imágenes.
+
+### Paso 5. Clave de la API de Anthropic
+
+1. Entra a <https://console.anthropic.com> y crea una cuenta.
+2. En **Billing** compra créditos (desde USD 5).
+3. En **API Keys** presiona **Create Key**, ponle de nombre `finanzas` y copia la clave (empieza por
+   `sk-ant-`). Solo se muestra una vez.
+
+### Paso 6. Publicar la función en Supabase
+
+1. En Supabase abre **Edge Functions** y presiona **Deploy a new function → Via Editor**.
+2. Como nombre escribe exactamente `leer-comprobante`.
+3. Borra el código de ejemplo, pega todo el contenido de
+   [`supabase/functions/leer-comprobante/index.ts`](supabase/functions/leer-comprobante/index.ts) y
+   presiona **Deploy function**.
+4. En **Edge Functions → Secrets** agrega:
+   - `ANTHROPIC_API_KEY` = la clave del paso 5.
+   - `MODELO_COMPROBANTES` (opcional) = el modelo a usar. Por defecto es `claude-opus-5-5`; con
+     `claude-haiku-5-5` cuesta mucho menos, a cambio de leer con menos precisión los pantallazos difíciles.
+
+Si la app dice *"Invalid JWT"* al leer un comprobante, entra a la función → **Settings** y desactiva
+**Verify JWT with legacy secret**: la función ya verifica por su cuenta que haya una sesión iniciada.
+
 ## Desarrollo local
 
 ```bash
@@ -94,12 +127,15 @@ probarla; luego puedes pasar esos datos a la nube con *Descargar respaldo* y *Re
 ```
 finanzas/
 ├── supabase/schema.sql      tablas y políticas de seguridad
+├── supabase/functions/
+│   └── leer-comprobante/    lee comprobantes con Claude (Edge Function)
 ├── src/lib/
 │   ├── types.ts             modelo de datos
 │   ├── db.ts                guardado en Supabase o en el navegador
 │   ├── seed.ts              catálogos iniciales
 │   ├── stats.ts             resumen del mes, saldos, proyección y consejos
-│   └── importExcel.ts       lectura del Excel de débitos
+│   ├── importExcel.ts       lectura del Excel de débitos
+│   └── comprobantes.ts      envío de pantallazos y armado de movimientos
 ├── src/views/               pantallas: Inicio, Movimientos, Registrar, Compromisos, Ajustes, Catálogos
 └── src/components/          gráficos y piezas de interfaz
 ```
@@ -108,7 +144,7 @@ finanzas/
 
 | Fase | Qué agrega | Qué se necesita |
 |------|------------|-----------------|
-| 2 | **Pantallazos**: subes la foto del comprobante (Nequi, Bancolombia, Daviplata…) y la app llena el movimiento | API key de Anthropic (console.anthropic.com), guardada como secreto en una *Edge Function* de Supabase, nunca en la app |
+| 2 ✅ | **Pantallazos**: subes la foto del comprobante (Nequi, Bancolombia, Daviplata…) y la app llena el movimiento | Ver pasos 5 y 6 |
 | 3 | **Correos de Gmail**: lee los soportes de pago de tu bandeja y los propone como movimientos para que solo los confirmes | Proyecto en Google Cloud con la Gmail API activada (OAuth, solo lectura) |
 | 4 | **Asesor de fin de mes**: un informe en lenguaje natural sobre tus hábitos y cómo optimizar el ahorro | La misma API key de la fase 2 |
 | — | Registrar sin conexión y sincronizar después | Nada adicional |
