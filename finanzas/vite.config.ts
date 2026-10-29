@@ -2,7 +2,11 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
+// Versión visible en Ajustes > Cuenta: commit que publicó Vercel y fecha de compilación.
+const version = `${(process.env.VERCEL_GIT_COMMIT_SHA ?? 'local').slice(0, 7)} · ${new Date().toISOString().slice(0, 10)}`
+
 export default defineConfig({
+  define: { __VERSION__: JSON.stringify(version) },
   plugins: [
     react(),
     VitePWA({

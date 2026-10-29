@@ -294,6 +294,7 @@ function Cuenta({ email }: { email: string | null }) {
         <p className="sub">
           {datos.movimientos.length} movimientos · {datos.clientes.length} clientes · {datos.compromisos.length} compromisos
         </p>
+        <p className="sub">Versión de la app: {__VERSION__}</p>
         {supabase && (
           <button className="btn" onClick={() => supabase!.auth.signOut()}>
             Cerrar sesión

@@ -4,7 +4,13 @@ import { registerSW } from 'virtual:pwa-register'
 import App from './App'
 import './styles.css'
 
-registerSW({ immediate: true })
+registerSW({
+  immediate: true,
+  // Además de revisar al abrir, busca una versión nueva cada hora por si la app queda abierta mucho tiempo.
+  onRegisteredSW(_url, registro) {
+    if (registro) setInterval(() => registro.update(), 60 * 60 * 1000)
+  },
+})
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
