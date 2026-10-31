@@ -11,7 +11,11 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['icon.svg', 'apple-touch-icon.png'],
+      includeAssets: ['icon.svg', 'logo-simbolo.svg', 'apple-touch-icon.png'],
+      workbox: {
+        // Las fuentes del alfabeto latino (incluye tildes y ñ) quedan guardadas para usar la app sin internet.
+        globPatterns: ['**/*.{js,css,html,svg,png}', 'assets/*-latin-wght-normal-*.woff2'],
+      },
       manifest: {
         name: 'Mis Finanzas',
         short_name: 'Finanzas',
@@ -19,8 +23,8 @@ export default defineConfig({
         lang: 'es-CO',
         start_url: '/',
         display: 'standalone',
-        background_color: '#f9f9f7',
-        theme_color: '#1c5cab',
+        background_color: '#1b1036',
+        theme_color: '#1b1036',
         icons: [
           { src: 'icon-192.png', sizes: '192x192', type: 'image/png' },
           { src: 'icon-512.png', sizes: '512x512', type: 'image/png' },

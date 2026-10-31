@@ -137,6 +137,7 @@ finanzas/
 │   ├── importExcel.ts       lectura del Excel de débitos
 │   └── comprobantes.ts      envío de pantallazos y armado de movimientos
 ├── src/views/               pantallas: Inicio, Movimientos, Registrar, Compromisos, Ajustes, Catálogos
+├── diseno/                  propuestas de logo, logos de Higgsfield y el logo final ("Bucle infinito")
 └── src/components/          gráficos y piezas de interfaz
 ```
 

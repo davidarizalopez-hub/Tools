@@ -1,27 +1,34 @@
+/* Identidad "Bucle infinito": noche uva, violeta, fucsia y oro.
+   Las series de los gráficos están validadas para daltonismo en ambos modos. */
 :root {
   color-scheme: light;
-  --fondo: #f9f9f7;
-  --superficie: #fcfcfb;
-  --superficie-2: #f0efec;
-  --borde: rgba(11, 11, 11, 0.1);
-  --texto: #0b0b0b;
-  --texto-2: #52514e;
-  --texto-3: #6f6d68;
-  --rejilla: #e1e0d9;
-  --eje: #c3c2b7;
-  --acento: #1c5cab;
-  --acento-suave: #cde2fb;
+  --fondo: #f6f4fb;
+  --superficie: #ffffff;
+  --superficie-2: #efebf8;
+  --borde: rgba(27, 16, 54, 0.09);
+  --texto: #1b1036;
+  --texto-2: #544a6e;
+  --texto-3: #7a7191;
+  --rejilla: #ebe7f3;
+  --eje: #cfc8de;
+  --acento: #6d4cff;
+  --acento-suave: #e9e3ff;
   --sobre-acento: #ffffff;
-  --serie-1: #2a78d6;
-  --serie-2: #eb6834;
-  --serie-3: #1baf7a;
-  --bien: #006300;
-  --mal: #b42323;
+  --degradado: linear-gradient(120deg, #6d4cff 0%, #b23ff0 55%, #f0418f 100%);
+  --noche: #1b1036;
+  --oro: #ffc93c;
+  --serie-1: #6d4cff;
+  --serie-2: #f0418f;
+  --serie-3: #e8a300;
+  --bien: #0a7d45;
+  --mal: #c4264b;
   --peligro: #d03b3b;
   --atencion: #b86e00;
-  --radio: 14px;
-  --nav: 64px;
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --sombra: 0 12px 32px -18px rgba(52, 23, 120, 0.35);
+  --radio: 20px;
+  --nav: 66px;
+  --display: 'Bricolage Grotesque Variable', 'Avenir Next', system-ui, sans-serif;
+  font-family: 'Figtree Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   font-size: 16px;
   line-height: 1.4;
   -webkit-text-size-adjust: 100%;
@@ -30,49 +37,51 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
     color-scheme: dark;
-    --fondo: #0d0d0d;
-    --superficie: #1a1a19;
-    --superficie-2: #262624;
-    --borde: rgba(255, 255, 255, 0.1);
-    --texto: #f0efec;
-    --texto-2: #c3c2b7;
-    --texto-3: #9a988f;
-    --rejilla: #2c2c2a;
-    --eje: #383835;
-    --acento: #5598e7;
-    --acento-suave: #184f95;
-    --sobre-acento: #0b0b0b;
-    --serie-1: #3987e5;
-    --serie-2: #d95926;
-    --serie-3: #199e70;
-    --bien: #0ca30c;
-    --mal: #e66767;
-    --peligro: #e66767;
+    --fondo: #0e0a1c;
+    --superficie: #1a1430;
+    --superficie-2: #251d40;
+    --borde: rgba(255, 255, 255, 0.08);
+    --texto: #f4f0ff;
+    --texto-2: #c6bde0;
+    --texto-3: #988fb3;
+    --rejilla: #2a2245;
+    --eje: #3a3058;
+    --acento: #9a85ff;
+    --acento-suave: #2d2160;
+    --sobre-acento: #ffffff;
+    --serie-1: #7c5cff;
+    --serie-2: #f0418f;
+    --serie-3: #c98500;
+    --bien: #3ddc8a;
+    --mal: #ff7a96;
+    --peligro: #ff6b6b;
     --atencion: #fab219;
+    --sombra: 0 14px 36px -18px rgba(0, 0, 0, 0.7);
   }
 }
 
 :root[data-theme='dark'] {
   color-scheme: dark;
-  --fondo: #0d0d0d;
-  --superficie: #1a1a19;
-  --superficie-2: #262624;
-  --borde: rgba(255, 255, 255, 0.1);
-  --texto: #f0efec;
-  --texto-2: #c3c2b7;
-  --texto-3: #9a988f;
-  --rejilla: #2c2c2a;
-  --eje: #383835;
-  --acento: #5598e7;
-  --acento-suave: #184f95;
-  --sobre-acento: #0b0b0b;
-  --serie-1: #3987e5;
-  --serie-2: #d95926;
-  --serie-3: #199e70;
-  --bien: #0ca30c;
-  --mal: #e66767;
-  --peligro: #e66767;
+  --fondo: #0e0a1c;
+  --superficie: #1a1430;
+  --superficie-2: #251d40;
+  --borde: rgba(255, 255, 255, 0.08);
+  --texto: #f4f0ff;
+  --texto-2: #c6bde0;
+  --texto-3: #988fb3;
+  --rejilla: #2a2245;
+  --eje: #3a3058;
+  --acento: #9a85ff;
+  --acento-suave: #2d2160;
+  --sobre-acento: #ffffff;
+  --serie-1: #7c5cff;
+  --serie-2: #f0418f;
+  --serie-3: #c98500;
+  --bien: #3ddc8a;
+  --mal: #ff7a96;
+  --peligro: #ff6b6b;
   --atencion: #fab219;
+  --sombra: 0 14px 36px -18px rgba(0, 0, 0, 0.7);
 }
 
 * {
@@ -81,8 +90,21 @@
 
 body {
   margin: 0;
-  background: var(--fondo);
+  background:
+    radial-gradient(90% 40% at 100% 0%, color-mix(in srgb, var(--acento) 14%, transparent), transparent 70%),
+    radial-gradient(70% 30% at 0% 0%, color-mix(in srgb, var(--serie-2) 8%, transparent), transparent 70%),
+    var(--fondo);
+  background-attachment: fixed;
   color: var(--texto);
+}
+
+h1,
+h2,
+.hero,
+.tile-valor,
+.selector-mes-titulo,
+.campo-valor-grande .campo-valor {
+  font-family: var(--display);
 }
 
 button,
@@ -116,7 +138,7 @@ p {
 .contenido {
   max-width: 640px;
   margin: 0 auto;
-  padding: calc(12px + env(safe-area-inset-top)) 16px calc(var(--nav) + 24px + env(safe-area-inset-bottom));
+  padding: calc(12px + env(safe-area-inset-top)) 16px calc(var(--nav) + 40px + env(safe-area-inset-bottom));
 }
 
 .pantalla,
@@ -127,21 +149,46 @@ p {
 }
 
 .titulo-pantalla {
-  font-size: 1.5rem;
-  font-weight: 650;
+  font-size: 1.75rem;
+  font-weight: 750;
+  letter-spacing: -0.02em;
   padding-top: 4px;
 }
 
+/* Encabezado con la marca, arriba del Inicio */
+.marca {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 1.2rem;
+  letter-spacing: -0.02em;
+}
+
+.marca img {
+  height: 26px;
+  width: auto;
+}
+
+/* Menú flotante y translúcido */
 .barra-nav {
   position: fixed;
-  inset: auto 0 0 0;
+  left: 12px;
+  right: 12px;
+  bottom: calc(10px + env(safe-area-inset-bottom));
+  max-width: 616px;
+  margin: 0 auto;
   display: flex;
   justify-content: space-around;
   align-items: stretch;
-  height: calc(var(--nav) + env(safe-area-inset-bottom));
-  padding-bottom: env(safe-area-inset-bottom);
-  background: var(--superficie);
-  border-top: 1px solid var(--borde);
+  height: var(--nav);
+  background: color-mix(in srgb, var(--superficie) 90%, transparent);
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  border: 1px solid var(--borde);
+  border-radius: 24px;
+  box-shadow: var(--sombra);
   z-index: 10;
 }
 
@@ -165,12 +212,19 @@ p {
 }
 
 .nav-registrar svg {
-  background: var(--acento);
-  color: var(--sobre-acento);
-  border-radius: 50%;
-  padding: 6px;
-  width: 38px;
-  height: 38px;
+  background: var(--degradado);
+  color: #ffffff;
+  border-radius: 18px;
+  padding: 11px;
+  width: 50px;
+  height: 50px;
+  margin-top: -22px;
+  box-shadow: 0 10px 22px -8px color-mix(in srgb, var(--serie-2) 70%, transparent);
+}
+
+.nav-registrar[aria-current='page'] svg {
+  outline: 3px solid color-mix(in srgb, var(--acento) 35%, transparent);
+  outline-offset: 2px;
 }
 
 .cargando,
@@ -185,16 +239,40 @@ p {
   text-align: center;
 }
 
+.login {
+  background:
+    radial-gradient(80% 50% at 100% 0%, rgba(240, 65, 143, 0.35), transparent 70%),
+    radial-gradient(80% 50% at 0% 100%, rgba(109, 76, 255, 0.45), transparent 70%),
+    var(--noche);
+  color: #ffffff;
+}
+
+.login h1 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.login .muted {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.login img {
+  border-radius: 22px;
+  box-shadow: 0 16px 40px -12px rgba(240, 65, 143, 0.55);
+}
+
 .login .formulario {
   width: 100%;
   max-width: 380px;
   text-align: left;
+  color: var(--texto);
 }
 
 .aviso {
   position: fixed;
   left: 50%;
-  bottom: calc(var(--nav) + 16px + env(safe-area-inset-bottom));
+  bottom: calc(var(--nav) + 30px + env(safe-area-inset-bottom));
   transform: translateX(-50%);
   max-width: calc(100% - 32px);
   background: var(--texto);
@@ -212,12 +290,30 @@ p {
   background: var(--superficie);
   border: 1px solid var(--borde);
   border-radius: var(--radio);
-  padding: 16px;
+  padding: 18px;
+  box-shadow: var(--sombra);
 }
 
 .tarjeta > h2 {
-  font-size: 1.05rem;
-  font-weight: 650;
+  font-size: 1.15rem;
+  font-weight: 750;
+  letter-spacing: -0.01em;
+}
+
+/* Tarjeta principal del Inicio: noche uva con brillo violeta y fucsia */
+.tarjeta-hero {
+  --texto: #ffffff;
+  --texto-2: rgba(255, 255, 255, 0.74);
+  --texto-3: rgba(255, 255, 255, 0.6);
+  --bien: #5ee6a0;
+  --mal: #ff9bb1;
+  color: var(--texto);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background:
+    radial-gradient(90% 70% at 100% 0%, rgba(240, 65, 143, 0.45), transparent 65%),
+    radial-gradient(80% 80% at 0% 100%, rgba(109, 76, 255, 0.5), transparent 70%),
+    var(--noche);
+  box-shadow: 0 22px 40px -22px rgba(109, 76, 255, 0.8);
 }
 
 .sub {
@@ -232,9 +328,9 @@ p {
 }
 
 .hero {
-  font-size: 2.6rem;
-  font-weight: 650;
-  letter-spacing: -0.02em;
+  font-size: 2.8rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
   margin: 2px 0 14px;
   overflow-wrap: anywhere;
 }
@@ -253,8 +349,8 @@ p {
 }
 
 .tile-valor {
-  font-weight: 650;
-  font-size: 1.05rem;
+  font-weight: 750;
+  font-size: 1.15rem;
   overflow-wrap: anywhere;
 }
 
@@ -315,10 +411,10 @@ p {
   gap: 6px;
   min-height: 44px;
   padding: 0 16px;
-  border-radius: 12px;
+  border-radius: 14px;
   border: 1px solid var(--borde);
   background: var(--superficie-2);
-  font-weight: 550;
+  font-weight: 600;
   cursor: pointer;
   text-align: center;
 }
@@ -328,9 +424,10 @@ p {
 }
 
 .btn-primario {
-  background: var(--acento);
-  color: var(--sobre-acento);
+  background: var(--degradado);
+  color: #ffffff;
   border-color: transparent;
+  box-shadow: 0 10px 20px -12px color-mix(in srgb, var(--serie-2) 80%, transparent);
 }
 
 .btn-peligro {
@@ -341,7 +438,7 @@ p {
 
 .btn-grande {
   width: 100%;
-  min-height: 52px;
+  min-height: 54px;
   font-size: 1.05rem;
 }
 
@@ -454,8 +551,9 @@ p {
 }
 
 .campo-valor-grande .campo-valor {
-  font-size: 2rem;
-  font-weight: 650;
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
 .campo-valor-grande input {
@@ -506,8 +604,8 @@ p {
 }
 
 .chip[aria-checked='true'] {
-  background: var(--acento);
-  color: var(--sobre-acento);
+  background: var(--degradado);
+  color: #ffffff;
   border-color: transparent;
   font-weight: 600;
 }
@@ -535,7 +633,7 @@ p {
 
 .segmentado button[aria-selected='true'] {
   background: var(--superficie);
-  color: var(--texto);
+  color: var(--acento);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
 }
 
@@ -779,7 +877,7 @@ p {
 
 .medidor > div {
   height: 100%;
-  background: var(--acento);
+  background: var(--degradado);
   border-radius: 999px;
 }
 

@@ -21,6 +21,10 @@ export function Inicio({ mes, setMes, irA }: { mes: string; setMes: (m: string) 
 
   return (
     <div className="pantalla">
+      <header className="marca">
+        <img src="/logo-simbolo.svg" alt="" />
+        <span>Mis Finanzas</span>
+      </header>
       <SelectorMes mes={mes} setMes={setMes} />
 
       {r.cantidad === 0 ? (
@@ -41,7 +45,7 @@ export function Inicio({ mes, setMes, irA }: { mes: string; setMes: (m: string) 
         </Vacio>
       ) : (
         <>
-          <section className="tarjeta">
+          <section className="tarjeta tarjeta-hero">
             <p className="etiqueta">Te quedó este mes</p>
             <p className={`hero ${r.balance < 0 ? 'negativo' : ''}`}>{pesos(r.balance)}</p>
             <div className="tiles">
