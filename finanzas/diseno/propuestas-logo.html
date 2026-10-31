@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Logo Mis Finanzas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Plan: página neutra que no compite con los logos; cada propuesta en su propia franja,
+   con el ícono grande a la izquierda y sus usos reales (inicio, pestaña, app) al lado. */
+:root {
+  --fondo: #f6f6f3;
+  --superficie: #ffffff;
+  --tinta: #16151d;
+  --tinta-2: #55535f;
+  --borde: rgba(22, 21, 29, .1);
+  --acento: #3b2fd6;
+  --display: "Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
+  --cuerpo: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --fondo: #111116; --superficie: #1a1a21; --tinta: #f1f0f5; --tinta-2: #b4b2c0;
+    --borde: rgba(255, 255, 255, .1); --acento: #a99dff; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --fondo: #111116; --superficie: #1a1a21; --tinta: #f1f0f5; --tinta-2: #b4b2c0;
+  --borde: rgba(255, 255, 255, .1); --acento: #a99dff; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--fondo); color: var(--tinta); font: 16px/1.5 var(--cuerpo); }
+main { max-width: 1080px; margin: 0 auto; padding: 40px 20px 64px; display: flex; flex-direction: column; gap: 28px; }
+h1, h2 { font-family: var(--display); margin: 0; text-wrap: balance; letter-spacing: -.01em; }
+h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; line-height: 1.05; }
+.intro { color: var(--tinta-2); max-width: 62ch; margin: 10px 0 0; font-size: 1.05rem; }
+.tira { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+.tira-item { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 14px 8px; border-radius: 16px;
+  background: var(--superficie); border: 1px solid var(--borde); color: var(--tinta); text-decoration: none; font-weight: 600; font-size: .9rem; text-align: center; }
+.tira-item:hover, .tira-item:focus-visible { border-color: var(--acento); outline: none; }
+.propuesta { background: var(--superficie); border: 1px solid var(--borde); border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 20px; scroll-margin-top: 16px; }
+.prop-cabecera { display: flex; gap: 16px; align-items: flex-start; }
+.prop-numero { font-family: var(--display); font-weight: 800; font-size: 2.6rem; line-height: .9; color: var(--acento); min-width: 1.2ch; }
+h2 { font-size: 1.6rem; font-weight: 800; }
+.idea { margin: 6px 0 0; color: var(--tinta-2); max-width: 65ch; }
+.prop-cuerpo { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 24px; align-items: start; }
+figure { margin: 0; display: flex; flex-direction: column; gap: 8px; }
+figcaption { font-size: .8rem; color: var(--tinta-2); }
+.icono-grande svg { filter: drop-shadow(0 10px 24px rgba(0, 0, 0, .18)); }
+.usos { display: flex; flex-direction: column; gap: 16px; }
+.inicio-celular .celular-iconos { display: flex; gap: 14px; padding: 16px; border-radius: 18px; background: var(--fondo-celular); width: max-content; max-width: 100%; }
+.hueco { width: 52px; height: 52px; border-radius: 13px; background: rgba(255, 255, 255, .55); }
+.app { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.app small { font-size: .7rem; color: #2a2a33; }
+.pestana-barra { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 10px 10px 0 0; background: var(--fondo); border: 1px solid var(--borde); border-bottom: 0; font-size: .85rem; width: max-content; }
+.paleta { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: .85rem; }
+.paleta li { display: flex; align-items: center; gap: 6px; }
+.chip-color { width: 18px; height: 18px; border-radius: 6px; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .12); }
+.paleta code { color: var(--tinta-2); font-size: .75rem; }
+.maqueta { width: 230px; border-radius: 26px; overflow: hidden; background: var(--m-claro); border: 1px solid var(--borde); box-shadow: 0 12px 30px rgba(0, 0, 0, .12); }
+.m-hero { background: radial-gradient(120% 90% at 100% 0%, color-mix(in srgb, var(--m-a) 45%, transparent), transparent 60%), var(--m-fondo); color: #fff; padding: 16px; display: flex; flex-direction: column; gap: 4px; }
+.m-marca { display: flex; align-items: center; gap: 8px; font-family: var(--display); font-weight: 800; font-size: .95rem; margin-bottom: 10px; }
+.m-etiqueta { margin: 0; font-size: .72rem; opacity: .75; }
+.m-cifra { margin: 0; font-family: var(--display); font-weight: 800; font-size: 1.55rem; line-height: 1.1; }
+.m-pastilla { align-self: flex-start; margin-top: 6px; font-size: .7rem; font-weight: 600; padding: 3px 10px; border-radius: 999px; background: var(--m-c); color: var(--m-fondo); }
+.m-cuerpo { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 14px; }
+.m-barras { height: 64px; display: flex; align-items: flex-end; gap: 10px; }
+.m-barras span { flex: 1; border-radius: 6px 6px 2px 2px; }
+.m-boton { text-align: center; padding: 10px; border-radius: 12px; background: var(--m-fondo); color: #fff; font-weight: 600; font-size: .85rem; }
+.cierre { color: var(--tinta-2); max-width: 65ch; }
+.cierre strong { color: var(--tinta); }
+@media (max-width: 860px) {
+  .prop-cuerpo { grid-template-columns: 1fr; }
+  .tira { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 420px) {
+  .tira { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .icono-grande svg { width: 132px; height: 132px; }
+}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Elige el logo de Mis Finanzas</h1>
+    <p class="intro">Cinco propuestas sobre la misma idea: tener el control de tu plata, mejorar mes a mes y que la app te ayude a pensar. Todas combinan colores juveniles con dorado, el color de la abundancia. Cada una se muestra como ícono, en la pantalla de inicio, en la pestaña del navegador y aplicada a la app.</p>
+  </header>
+  <nav class="tira" aria-label="Las cinco propuestas"><a class="tira-item" href="#espiral"><svg viewBox="0 0 120 120" width="64" height="64" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logo Espiral áurea"><rect width="120" height="120" rx="27" fill="#14123b"/><g transform="translate(60 60) scale(.82) translate(-60 -60)"><g transform="rotate(180 60 60)"><path d="M76.73,73.01 A3.72,3.72 0 0 0 80.44,69.29" fill="none" stroke="#19c37d" stroke-width="3.0" stroke-linecap="round"/><path d="M80.44,69.29 A3.72,3.72 0 0 0 76.73,65.58" fill="none" stroke="#3ec373" stroke-width="4.5" stroke-linecap="round"/><path d="M76.73,65.58 A7.43,7.43 0 0 0 69.29,73.01" fill="none" stroke="#62c469" stroke-width="6.0" stroke-linecap="round"/><path d="M69.29,73.01 A11.15,11.15 0 0 0 80.44,84.16" fill="none" stroke="#87c460" stroke-width="7.5" stroke-linecap="round"/><path d="M80.44,84.16 A18.59,18.59 0 0 0 99.03,65.58" fill="none" stroke="#acc456" stroke-width="9.0" stroke-linecap="round"/><path d="M99.03,65.58 A29.74,29.74 0 0 0 69.29,35.84" fill="none" stroke="#d0c54c" stroke-width="10.5" stroke-linecap="round"/><path d="M69.29,35.84 A48.32,48.32 0 0 0 20.97,84.16" fill="none" stroke="#f5c542" stroke-width="12.0" stroke-linecap="round"/><circle cx="20.97" cy="84.16" r="9" fill="#f5c542"/><circle cx="20.97" cy="84.16" r="4.2" fill="none" stroke="#14123b" stroke-width="1.6"/></g></g></svg><span>1. Espiral áurea</span></a><a class="tira-item" href="#brote"><svg viewBox="0 0 120 120" width="64" height="64" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logo Brote"><rect width="120" height="120" rx="27" fill="#0f3d2e"/><g transform="translate(60 60) scale(.82) translate(-60 -60)"><circle cx="60" cy="78" r="27" fill="#ffc83d"/><circle cx="60" cy="78" r="20" fill="none" stroke="#0f3d2e" stroke-width="2.4" opacity=".35"/><path d="M47,70 A15,15 0 0 1 60,62" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" opacity=".7"/><path d="M60,58 C60,46 61,38 64,28" fill="none" stroke="#2bd48a" stroke-width="5" stroke-linecap="round"/><path d="M0,0 C6,-12 22,-16 34,-12 C26,-2 12,4 0,0 Z" transform="translate(62,40) rotate(-28)" fill="#c6f45b"/><path d="M0,0 C6,-12 22,-16 34,-12 C26,-2 12,4 0,0 Z" transform="translate(60,48) scale(-0.82,0.82) rotate(-24)" fill="#2bd48a"/><circle cx="84" cy="26" r="3" fill="#ffc83d"/><circle cx="92" cy="40" r="2" fill="#c6f45b"/></g></svg><span>2. Brote</span></a><a class="tira-item" href="#bucle"><svg viewBox="0 0 120 120" width="64" height="64" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logo Bucle infinito"><rect width="120" height="120" rx="27" fill="#1b1036"/><g transform="translate(60 60) scale(.82) translate(-60 -60)"><defs><linearGradient id="g-bucle-139913654862800-7" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#7c5cff"/><stop offset="1" stop-color="#ff4fa3"/></linearGradient></defs><path d="M96.17,75.94 L95.35,76.79 L94.47,77.58 L93.55,78.30 L92.58,78.94 L91.58,79.51 L90.55,80.00 L89.50,80.43 L88.43,80.78 L87.36,81.06 L86.28,81.28 L85.20,81.43 L84.12,81.52 L83.06,81.56 L82.00,81.53 L80.95,81.46 L79.92,81.34 L78.91,81.17 L77.91,80.97 L76.93,80.72 L75.97,80.44 L75.04,80.12 L74.12,79.77 L73.22,79.40 L72.34,79.00 L71.49,78.57 L70.65,78.13 L69.83,77.66 L69.03,77.18 L68.25,76.68 L67.48,76.16 L66.73,75.64 L66.00,75.10 L65.28,74.55 L64.58,73.99 L63.88,73.42 L63.20,72.84 L62.53,72.26 L61.87,71.67 L61.22,71.08 L60.58,70.48 L59.94,69.88 L59.31,69.27 L58.69,68.67 L58.07,68.06 L57.45,67.45 L56.83,66.83 L56.22,66.22 L55.61,65.61 L54.99,64.99 L54.38,64.38 L53.76,63.77 L53.14,63.16 L52.51,62.55 L51.88,61.95 L51.24,61.35 L50.59,60.75 L49.94,60.16 L49.28,59.57 L48.60,58.99 L47.92,58.42 L47.22,57.85 L46.52,57.30 L45.79,56.75 L45.05,56.21 L44.30,55.69 L43.53,55.18 L42.74,54.68 L41.94,54.21 L41.11,53.74 L40.27,53.30 L39.41,52.89 L38.53,52.49 L37.62,52.13 L36.70,51.79 L35.76,51.48 L34.79,51.21 L33.81,50.97 L32.81,50.77 L31.79,50.62 L30.75,50.51 L29.70,50.45 L28.64,50.45 L27.57,50.50 L26.49,50.61 L25.41,50.78 L24.33,51.01 L23.26,51.31 L22.20,51.69 L21.16,52.13 L20.13,52.65 L19.14,53.24 L18.19,53.90 L17.27,54.64 L16.41,55.44 L15.60,56.32 L14.86,57.26 L14.19,58.26 L13.61,59.31 L13.10,60.42 L12.69,61.56 L12.37,62.74 L12.14,63.95 L12.02,65.17 L12.01,66.39 L12.09,67.62 L12.28,68.83 L12.56,70.02 L12.94,71.18 L13.41,72.30 L13.97,73.37 L14.62,74.39 L15.33,75.35 L16.11,76.25 L16.96,77.08 L17.85,77.85 L18.80,78.53 L19.78,79.15 L20.79,79.69 L21.83,80.16 L22.88,80.56 L23.95,80.89 L25.03,81.15 L26.11,81.34 L27.19,81.47 L28.26,81.54 L29.32,81.55 L30.38,81.51 L31.42,81.42 L32.44,81.29 L33.45,81.11 L34.44,80.88 L35.41,80.62 L36.36,80.33 L37.29,80.00 L38.21,79.64 L39.10,79.26 L39.97,78.85 L40.82,78.41 L41.65,77.96 L42.46,77.49 L43.25,77.00 L44.03,76.50 L44.79,75.98 L45.53,75.44 L46.26,74.90 L46.97,74.35 L47.67,73.79 L48.36,73.21 L49.04,72.64 L49.70,72.05 L50.36,71.46 L51.01,70.87 L51.65,70.27 L52.28,69.66 L52.91,69.06 L53.54,68.45 L54.15,67.84 L54.77,67.23 L55.39,66.61 L56.00,66.00 L80.04,41.96" fill="none" stroke="url(#g-bucle-139913654862800-7)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M63.04,41.96 L80.04,41.96 L80.04,58.96" fill="none" stroke="#ff4fa3" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M0,-9 C1,-2 2,-1 9,0 C2,1 1,2 0,9 C-1,2 -2,1 -9,0 C-2,-1 -1,-2 0,-9 Z" transform="translate(50.0,46.0) scale(1.15)" fill="#ffc93c"/></g></svg><span>3. Bucle infinito</span></a><a class="tira-item" href="#pulso"><svg viewBox="0 0 120 120" width="64" height="64" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logo Pulso"><rect width="120" height="120" rx="27" fill="#0a1a3f"/><g transform="translate(60 60) scale(.82) translate(-60 -60)"><rect x="24" y="76" width="16" height="20" rx="5" fill="#2f6bff"/><rect x="46" y="60" width="16" height="36" rx="5" fill="#289ff6"/><rect x="68" y="44" width="16" height="52" rx="5" fill="#22d3ee"/><path d="M32,68 L54,52 L76,36 L94,22" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="32" cy="68" r="4.5" fill="#ffffff"/><circle cx="54" cy="52" r="4.5" fill="#ffffff"/><circle cx="76" cy="36" r="4.5" fill="#ffffff"/><circle cx="94" cy="22" r="11" fill="#ffc83d" opacity=".28"/><circle cx="94" cy="22" r="6.5" fill="#ffc83d"/></g></svg><span>4. Pulso</span></a><a class="tira-item" href="#gema"><svg viewBox="0 0 120 120" width="64" height="64" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logo Gema"><rect width="120" height="120" rx="27" fill="#0f2a3d"/><g transform="translate(60 60) scale(.82) translate(-60 -60)"><polygon points="34,30 50,30 40,52" fill="#ffa94d"/><polygon points="34,30 40,52 16,52" fill="#ff6b5a"/><polygon points="50,30 70,30 60,52" fill="#ffd166"/><polygon points="50,30 60,52 40,52" fill="#ffa94d"/><polygon points="70,30 80,52 60,52" fill="#ffa94d"/><polygon points="70,30 86,30 80,52" fill="#ffd166"/><polygon points="86,30 104,52 80,52" fill="#ffa94d"/><polygon points="16,52 40,52 60,100" fill="#ff6b5a"/><polygon points="40,52 60,52 60,100" fill="#e2553f"/><polygon points="60,52 80,52 60,100" fill="#ff6b5a"/><polygon points="80,52 104,52 60,100" fill="#e2553f"/><polygon points="34,30 86,30 104,52 60,100 16,52" fill="none" stroke="#0f2a3d" stroke-width="1.4" stroke-linejoin="round" opacity=".35"/><path d="M48,74 L60,62 L72,74" fill="none" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/><path d="M0,-7 C.8,-1.6 1.6,-.8 7,0 C1.6,.8 .8,1.6 0,7 C-.8,1.6 -1.6,.8 -7,0 C-1.6,-.8 -.8,-1.6 0,-7 Z" transform="translate(98,24)" fill="#ffd166"/></g></svg><span>5. Gema</span></a></nav>
+  
+  <article class="propuesta" id="espiral">
+    <header class="prop-cabecera">
+      <span class="prop-numero">1</span>
+      <div>
+        <h2>Espiral áurea</h2>
+        <p class="idea">La espiral de Fibonacci crece en la misma proporción en cada vuelta: así se ve el mejoramiento continuo. Cada tramo es más grueso y pasa del verde al dorado, como el ahorro que se acumula, y remata en una moneda.</p>
+      </div>
+    </header>
+    <div class="prop-cuerpo">
+      <figure class="icono-grande"><svg viewBox="0 0 120 120" width="168" height="168" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logo Espiral áurea"><rect width="120" height="120" rx="27" fill="#14123b"/><g transform="translate(60 60) scale(.82) translate(-60 -60)"><g transform="rotate(180 60 60)"><path d="M76.73,73.01 A3.72,3.72 0 0 0 80.44,69.29" fill="none" stroke="#19c37d" stroke-width="3.0" stroke-linecap="round"/><path d="M80.44,69.29 A3.72,3.72 0 0 0 76.73,65.58" fill="none" stroke="#3ec373" stroke-width="4.5" stroke-linecap="round"/><path d="M76.73,65.58 A7.43,7.43 0 0 0 69.29,73.01" fill="none" stroke="#62c469" stroke-width="6.0" stroke-linecap="round"/><path d="M69.29,73.01 A11.15,11.15 0 0 0 80.44,84.16" fill="none" stroke="#87c460" stroke-width="7.5" stroke-linecap="round"/><path d="M80.44,84.16 A18.59,18.59 0 0 0 99.03,65.58" fill="none" stroke="#acc456" stroke-width="9.0" stroke-linecap="round"/><path d="M99.03,65.58 A29.74,29.74 0 0 0 69.29,35.84" fill="none" stroke="#d0c54c" stroke-width="10.5" stroke-linecap="round"/><path d="M69.29,35.84 A48.32,48.32 0 0 0 20.97,84.16" fill="none" stroke="#f5c542" stroke-width="12.0" stroke-linecap="round"/><circle cx="20.97" cy="84.16" r="9" fill="#f5c542"/><circle cx="20.97" cy="84.16" r="4.2" fill="none" stroke="#14123b" stroke-width="1.6"/></g></g></svg><figcaption>Ícono de la app</figcaption></figure>
+      <div class="usos">
+        <figure class="inicio-celular" style="--fondo-celular:linear-gradient(160deg,#ecfbf3,#d9dde8)">
+          <div class="celular-iconos">
+            <span class="hueco"></span><span class="hueco"></span>
+            <span class="app"><svg viewBox="0 0 120 120" width="52" height="52" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logo Espiral áurea"><rect width="120" height="120" rx="27" fill="#14123b"/><g transform="translate(60 60) scale(.82) translate(-60 -60)"><g transform="rotate(180 60 60)"><path d="M76.73,73.01 A3.72,3.72 0 0 0 80.44,69.29" fill="none" stroke="#19c37d" stroke-width="3.0" stroke-linecap="round"/><path d="M80.44,69.29 A3.72,3.72 0 0 0 76.73,65.58" fill="none" stroke="#3ec373" stroke-width="4.5" stroke-linecap="round"/><path d="M76.73,65.58 A7.43,7.43 0 0 0 69.29,73.01" fill="none" stroke="#62c469" stroke-width="6.0" stroke-linecap="round"/><path d="M69.29,73.01 A11.15,11.15 0 0 0 80.44,84.16" fill="none" stroke="#87c460" stroke-width="7.5" stroke-linecap="round"/><path d="M80.44,84.16 A18.59,18.59 0 0 0 99.03,65.58" fill="none" stroke="#acc456" stroke-width="9.0" stroke-linecap="round"/><path d="M99.03,65.58 A29.74,29.74 0 0 0 69.29,35.84" fill="none" stroke="#d0c54c" stroke-width="10.5" stroke-linecap="round"/><path d="M69.29,35.84 A48.32,48.32 0 0 0 20.97,84.16" fill="none" stroke="#f5c542" stroke-width="12.0" stroke-linecap="round"/><circle cx="20.97" cy="84.16" r="9" fill="#f5c542"/><circle cx="20.97" cy="84.16" r="4.2" fill="none" stroke="#14123b" stroke-width="1.6"/></g></g></svg><small>Finanzas</small></span>
+            <span class="hueco"></span>
+          </div>
+          <figcaption>En la pantalla de inicio</figcaption>
+        </figure>
+        <figure class="pestana">
+          <div class="pestana-barra"><svg viewBox="0 0 120 120" width="16" height="16" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logo Espiral áurea"><rect width="120" height="120" rx="27" fill="#14123b"/><g transform="translate(60 60) scale(.82) translate(-60 -60)"><g transform="rotate(180 60 60)"><path d="M76.73,73.01 A3.72,3.72 0 0 0 80.44,69.29" fill="none" stroke="#19c37d" stroke-width="3.0" stroke-linecap="round"/><path d="M80.44,69.29 A3.72,3.72 0 0 0 76.73,65.58" fill="none" stroke="#3ec373" stroke-width="4.5" stroke-linecap="round"/><path d="M76.73,65.58 A7.43,7.43 0 0 0 69.29,73.01" fill="none" stroke="#62c469" stroke-width="6.0" stroke-linecap="round"/><path d="M69.29,73.01 A11.15,11.15 0 0 0 80.44,84.16" fill="none" stroke="#87c460" stroke-width="7.5" stroke-linecap="round"/><path d="M80.44,84.16 A18.59,18.59 0 0 0 99.03,65.58" fill="none" stroke="#acc456" stroke-width="9.0" stroke-linecap="round"/><path d="M99.03,65.58 A29.74,29.74 0 0 0 69.29,35.84" fill="none" stroke="#d0c54c" stroke-width="10.5" stroke-linecap="round"/><path d="M69.29,35.84 A48.32,48.32 0 0 0 20.97,84.16" fill="none" stroke="#f5c542" stroke-width="12.0" stroke-linecap="round"/><circle cx="20.97" cy="84.16" r="9" fill="#f5c542"/><circle cx="20.97" cy="84.16" r="4.2" fill="none" stroke="#14123b" stroke-width="1.6"/></g></g></svg><span>Mis Finanzas</span></div>
+          <figcaption>En la pestaña del navegador</figcaption>
+        </figure>
+        <ul class="paleta"><li><span class="chip-color" style="background:#14123b"></span><span>Noche índigo</span><code>#14123b</code></li><li><span class="chip-color" style="background:#19c37d"></span><span>Esmeralda</span><code>#19c37d</code></li><li><span class="chip-color" style="background:#f5c542"></span><span>Oro</span><code>#f5c542</code></li></ul>
+      </div>
+      <figure class="figura-maqueta">
+    <div class="maqueta" style="--m-fondo:#14123b;--m-a:#19c37d;--m-b:#f5c542;--m-c:#f5c542;--m-claro:#ecfbf3">
+      <div class="m-hero">
+        <div class="m-marca"><svg viewBox="0 0 120 120" width="26" height="26" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logo Espiral áurea"><rect width="120" height="120" rx="27" fill="#14123b"/><g transform="translate(60 60) scale(.82) translate(-60 -60)"><g transform="rotate(180 60 60)"><path d="M76.73,73.01 A3.72,3.72 0 0 0 80.44,69.29" fill="none" stroke="#19c37d" stroke-width="3.0" stroke-linecap="round"/><path d="M80.44,69.29 A3.72,3.72 0 0 0 76.73,65.58" fill="none" stroke="#3ec373" stroke-width="4.5" stroke-linecap="round"/><path d="M76.73,65.58 A7.43,7.43 0 0 0 69.29,73.01" fill="none" stroke="#62c469" stroke-width="6.0" stroke-linecap="round"/><path d="M69.29,73.01 A11.15,11.15 0 0 0 80.44,84.16" fill="none" stroke="#87c460" stroke-width="7.5" stroke-linecap="round"/><path d="M80.44,84.16 A18.59,18.59 0 0 0 99.03,65.58" fill="none" stroke="#acc456" stroke-width="9.0" stroke-linecap="round"/><path d="M99.03,65.58 A29.74,29.74 0 0 0 69.29,35.84" fill="none" stroke="#d0c54c" stroke-width="10.5" stroke-linecap="round"/><path d="M69.29,35.84 A48.32,48.32 0 0 0 20.97,84.16" fill="none" stroke="#f5c542" stroke-width="12.0" stroke-linecap="round"/><circle cx="20.97" cy="84.16" r="9" fill="#f5c542"/><circle cx="20.97" cy="84.16" r="4.2" fill="none" stroke="#14123b" stroke-width="1.6"/></g></g></svg><span>Mis Finanzas</span></div>
+        <p class="m-etiqueta">Te quedó en octubre</p>
+        <p class="m-cifra">$ 3.799.110</p>
+        <span class="m-pastilla">▲ ahorraste 24%</span>
+      </div>
+      <div class="m-cuerpo">
+        <div class="m-barras"><span style="height:38%;background:#19c37d"></span><span style="height:62%;background:#f5c542"></span><span style="height:84%;background:#f5c542"></span></div>
+        <span class="m-boton">Registrar gasto</span>
+      </div>
+    </div><figcaption>Así se vería la app</figcaption></figure>
+    </div>
+  </article>
+  <article class="propuesta" id="brote">
+    <header class="prop-cabecera">
+      <span class="prop-numero">2</span>
+      <div>
+        <h2>Brote</h2>
+        <p class="idea">Una moneda de la que nace una planta: la plata bien cuidada crece sola. Es el concepto más cálido y fácil de entender de un vistazo, incluso en tamaño pequeño.</p>
+      </div>
+    </header>
+    <div class="prop-cuerpo">
+      <figure class="icono-grande"><svg viewBox="0 0 120 120" width="168" height="168" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logo Brote"><rect width="120" height="120" rx="27" fill="#0f3d2e"/><g transform="translate(60 60) scale(.82) translate(-60 -60)"><circle cx="60" cy="78" r="27" fill="#ffc83d"/><circle cx="60" cy="78" r="20" fill="none" stroke="#0f3d2e" stroke-width="2.4" opacity=".35"/><path d="M47,70 A15,15 0 0 1 60,62" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" opacity=".7"/><path d="M60,58 C60,46 61,38 64,28" fill="none" stroke="#2bd48a" stroke-width="5" stroke-linecap="round"/><path d="M0,0 C6,-12 22,-16 34,-12 C26,-2 12,4 0,0 Z" transform="translate(62,40) rotate(-28)" fill="#c6f45b"/><path d="M0,0 C6,-12 22,-16 34,-12 C26,-2 12,4 0,0 Z" transform="translate(60,48) scale(-0.82,0.82) rotate(-24)" fill="#2bd48a"/><circle cx="84" cy="26" r="3" fill="#ffc83d"/><circle cx="92" cy="40" r="2" fill="#c6f45b"/></g></svg><figcaption>Ícono de la app</figcaption></figure>
+      <div class="usos">
+        <figure class="inicio-celular" style="--fondo-celular:linear-gradient(160deg,#effcf4,#d9dde8)">
+          <div class="celular-iconos">
+            <span class="hueco"></span><span class="hueco"></span>
+            <span class="app"><svg viewBox="0 0 120 120" width="52" height="52" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logo Brote"><rect width="120" height="120" rx="27" fill="#0f3d2e"/><g transform="translate(60 60) scale(.82) translate(-60 -60)"><circle cx="60" cy="78" r="27" fill="#ffc83d"/><circle cx="60" cy="78" r="20" fill="none" stroke="#0f3d2e" stroke-width="2.4" opacity=".35"/><path d="M47,70 A15,15 0 0 1 60,62" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" opacity=".7"/><path d="M60,58 C60,46 61,38 64,28" fill="none" stroke="#2bd48a" stroke-width="5" stroke-linecap="round"/><path d="M0,0 C6,-12 22,-16 34,-12 C26,-2 12,4 0,0 Z" transform="translate(62,40) rotate(-28)" fill="#c6f45b"/><path d="M0,0 C6,-12 22,-16 34,-12 C26,-2 12,4 0,0 Z" transform="translate(60,48) scale(-0.82,0.82) rotate(-24)" fill="#2bd48a"/><circle cx="84" cy="26" r="3" fill="#ffc83d"/><circle cx="92" cy="40" r="2" fill="#c6f45b"/></g></svg><small>Finanzas</small></span>
+            <span class="hueco"></span>
+          </div>
+          <figcaption>En la pantalla de inicio</figcaption>
+        </figure>
+        <figure class="pestana">
+          <div class="pestana-barra"><svg viewBox="0 0 120 120" width="16" height="16" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logo Brote"><rect width="120" height="120" rx="27" fill="#0f3d2e"/><g transform="translate(60 60) scale(.82) translate(-60 -60)"><circle cx="60" cy="78" r="27" fill="#ffc83d"/><circle cx="60" cy="78" r="20" fill="none" stroke="#0f3d2e" stroke-width="2.4" opacity=".35"/><path d="M47,70 A15,15 0 0 1 60,62" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" opacity=".7"/><path d="M60,58 C60,46 61,38 64,28" fill="none" stroke="#2bd48a" stroke-width="5" stroke-linecap="round"/><path d="M0,0 C6,-12 22,-16 34,-12 C26,-2 12,4 0,0 Z" transform="translate(62,40) rotate(-28)" fill="#c6f45b"/><path d="M0,0 C6,-12 22,-16 34,-12 C26,-2 12,4 0,0 Z" transform="translate(60,48) scale(-0.82,0.82) rotate(-24)" fill="#2bd48a"/><circle cx="84" cy="26" r="3" fill="#ffc83d"/><circle cx="92" cy="40" r="2" fill="#c6f45b"/></g></svg><span>Mis Finanzas</span></div>
+          <figcaption>En la pestaña del navegador</figcaption>
+        </figure>
+        <ul class="paleta"><li><span class="chip-color" style="background:#0f3d2e"></span><span>Bosque</span><code>#0f3d2e</code></li><li><span class="chip-color" style="background:#2bd48a"></span><span>Menta</span><code>#2bd48a</code></li><li><span class="chip-color" style="background:#c6f45b"></span><span>Lima</span><code>#c6f45b</code></li><li><span class="chip-color" style="background:#ffc83d"></span><span>Oro</span><code>#ffc83d</code></li></ul>
+      </div>
+      <figure class="figura-maqueta">
+    <div class="maqueta" style="--m-fondo:#0f3d2e;--m-a:#2bd48a;--m-b:#c6f45b;--m-c:#ffc83d;--m-claro:#effcf4">
+      <div class="m-hero">
+        <div class="m-marca"><svg viewBox="0 0 120 120" width="26" height="26" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logo Brote"><rect width="120" height="120" rx="27" fill="#0f3d2e"/><g transform="translate(60 60) scale(.82) translate(-60 -60)"><circle cx="60" cy="78" r="27" fill="#ffc83d"/><circle cx="60" cy="78" r="20" fill="none" stroke="#0f3d2e" stroke-width="2.4" opacity=".35"/><path d="M47,70 A15,15 0 0 1 60,62" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" opacity=".7"/><path d="M60,58 C60,46 61,38 64,28" fill="none" stroke="#2bd48a" stroke-width="5" stroke-linecap="round"/><path d="M0,0 C6,-12 22,-16 34,-12 C26,-2 12,4 0,0 Z" transform="translate(62,40) rotate(-28)" fill="#c6f45b"/><path d="M0,0 C6,-12 22,-16 34,-12 C26,-2 12,4 0,0 Z" transform="translate(60,48) scale(-0.82,0.82) rotate(-24)" fill="#2bd48a"/><circle cx="84" cy="26" r="3" fill="#ffc83d"/><circle cx="92" cy="40" r="2" fill="#c6f45b"/></g></svg><span>Mis Finanzas</span></div>
+        <p class="m-etiqueta">Te quedó en octubre</p>
+        <p class="m-cifra">$ 3.799.110</p>
+        <span class="m-pastilla">▲ ahorraste 24%</span>
+      </div>
+      <div class="m-cuerpo">
+        <div class="m-barras"><span style="height:38%;background:#2bd48a"></span><span style="height:62%;background:#c6f45b"></span><span style="height:84%;background:#ffc83d"></span></div>
+        <span class="m-boton">Registrar gasto</span>
+      </div>
+    </div><figcaption>Así se vería la app</figcaption></figure>
+    </div>
+  </article>
+  <article class="propuesta" id="bucle">
+    <header class="prop-cabecera">
+      <span class="prop-numero">3</span>
+      <div>
+        <h2>Bucle infinito</h2>
+        <p class="idea">El símbolo de infinito es el ciclo de registrar, medir y mejorar. Uno de sus lazos se rompe y sale disparado hacia arriba, y la chispa representa la parte inteligente que te da los consejos.</p>
+      </div>
+    </header>
+    <div class="prop-cuerpo">
+      <figure class="icono-grande"><svg viewBox="0 0 120 120" width="168" height="168" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logo Bucle infinito"><rect width="120" height="120" rx="27" fill="#1b1036"/><g transform="translate(60 60) scale(.82) translate(-60 -60)"><defs><linearGradient id="g-bucle-139913654862800-18" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#7c5cff"/><stop offset="1" stop-color="#ff4fa3"/></linearGradient></defs><path d="M96.17,75.94 L95.35,76.79 L94.47,77.58 L93.55,78.30 L92.58,78.94 L91.58,79.51 L90.55,80.00 L89.50,80.43 L88.43,80.78 L87.36,81.06 L86.28,81.28 L85.20,81.43 L84.12,81.52 L83.06,81.56 L82.00,81.53 L80.95,81.46 L79.92,81.34 L78.91,81.17 L77.91,80.97 L76.93,80.72 L75.97,80.44 L75.04,80.12 L74.12,79.77 L73.22,79.40 L72.34,79.00 L71.49,78.57 L70.65,78.13 L69.83,77.66 L69.03,77.18 L68.25,76.68 L67.48,76.16 L66.73,75.64 L66.00,75.10 L65.28,74.55 L64.58,73.99 L63.88,73.42 L63.20,72.84 L62.53,72.26 L61.87,71.67 L61.22,71.08 L60.58,70.48 L59.94,69.88 L59.31,69.27 L58.69,68.67 L58.07,68.06 L57.45,67.45 L56.83,66.83 L56.22,66.22 L55.61,65.61 L54.99,64.99 L54.38,64.38 L53.76,63.77 L53.14,63.16 L52.51,62.55 L51.88,61.95 L51.24,61.35 L50.59,60.75 L49.94,60.16 L49.28,59.57 L48.60,58.99 L47.92,58.42 L47.22,57.85 L46.52,57.30 L45.79,56.75 L45.05,56.21 L44.30,55.69 L43.53,55.18 L42.74,54.68 L41.94,54.21 L41.11,53.74 L40.27,53.30 L39.41,52.89 L38.53,52.49 L37.62,52.13 L36.70,51.79 L35.76,51.48 L34.79,51.21 L33.81,50.97 L32.81,50.77 L31.79,50.62 L30.75,50.51 L29.70,50.45 L28.64,50.45 L27.57,50.50 L26.49,50.61 L25.41,50.78 L24.33,51.01 L23.26,51.31 L22.20,51.69 L21.16,52.13 L20.13,52.65 L19.14,53.24 L18.19,53.90 L17.27,54.64 L16.41,55.44 L15.60,56.32 L14.86,57.26 L14.19,58.26 L13.61,59.31 L13.10,60.42 L12.69,61.56 L12.37,62.74 L12.14,63.95 L12.02,65.17 L12.01,66.39 L12.09,67.62 L12.28,68.83 L12.56,70.02 L12.94,71.18 L13.41,72.30 L13.97,73.37 L14.62,74.39 L15.33,75.35 L16.11,76.25 L16.96,77.08 L17.85,77.85 L18.80,78.53 L19.78,79.15 L20.79,79.69 L21.83,80.16 L22.88,80.56 L23.95,80.89 L25.03,81.15 L26.11,81.34 L27.19,81.47 L28.26,81.54 L29.32,81.55 L30.38,81.51 L31.42,81.42 L32.44,81.29 L33.45,81.11 L34.44,80.88 L35.41,80.62 L36.36,80.33 L37.29,80.00 L38.21,79.64 L39.10,79.26 L39.97,78.85 L40.82,78.41 L41.65,77.96 L42.46,77.49 L43.25,77.00 L44.03,76.50 L44.79,75.98 L45.53,75.44 L46.26,74.90 L46.97,74.35 L47.67,73.79 L48.36,73.21 L49.04,72.64 L49.70,72.05 L50.36,71.46 L51.01,70.87 L51.65,70.27 L52.28,69.66 L52.91,69.06 L53.54,68.45 L54.15,67.84 L54.77,67.23 L55.39,66.61 L56.00,66.00 L80.04,41.96" fill="none" stroke="url(#g-bucle-139913654862800-18)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M63.04,41.96 L80.04,41.96 L80.04,58.96" fill="none" stroke="#ff4fa3" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M0,-9 C1,-2 2,-1 9,0 C2,1 1,2 0,9 C-1,2 -2,1 -9,0 C-2,-1 -1,-2 0,-9 Z" transform="translate(50.0,46.0) scale(1.15)" fill="#ffc93c"/></g></svg><figcaption>Ícono de la app</figcaption></figure>
+      <div class="usos">
+        <figure class="inicio-celular" style="--fondo-celular:linear-gradient(160deg,#f4f0ff,#d9dde8)">
+          <div class="celular-iconos">
+            <span class="hueco"></span><span class="hueco"></span>
+            <span class="app"><svg viewBox="0 0 120 120" width="52" height="52" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logo Bucle infinito"><rect width="120" height="120" rx="27" fill="#1b1036"/><g transform="translate(60 60) scale(.82) translate(-60 -60)"><defs><linearGradient id="g-bucle-139913654862800-19" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#7c5cff"/><stop offset="1" stop-color="#ff4fa3"/></linearGradient></defs><path d="M96.17,75.94 L95.35,76.79 L94.47,77.58 L93.55,78.30 L92.58,78.94 L91.58,79.51 L90.55,80.00 L89.50,80.43 L88.43,80.78 L87.36,81.06 L86.28,81.28 L85.20,81.43 L84.12,81.52 L83.06,81.56 L82.00,81.53 L80.95,81.46 L79.92,81.34 L78.91,81.17 L77.91,80.97 L76.93,80.72 L75.97,80.44 L75.04,80.12 L74.12,79.77 L73.22,79.40 L72.34,79.00 L71.49,78.57 L70.65,78.13 L69.83,77.66 L69.03,77.18 L68.25,76.68 L67.48,76.16 L66.73,75.64 L66.00,75.10 L65.28,74.55 L64.58,73.99 L63.88,73.42 L63.20,72.84 L62.53,72.26 L61.87,71.67 L61.22,71.08 L60.58,70.48 L59.94,69.88 L59.31,69.27 L58.69,68.67 L58.07,68.06 L57.45,67.45 L56.83,66.83 L56.22,66.22 L55.61,65.61 L54.99,64.99 L54.38,64.38 L53.76,63.77 L53.14,63.16 L52.51,62.55 L51.88,61.95 L51.24,61.35 L50.59,60.75 L49.94,60.16 L49.28,59.57 L48.60,58.99 L47.92,58.42 L47.22,57.85 L46.52,57.30 L45.79,56.75 L45.05,56.21 L44.30,55.69 L43.53,55.18 L42.74,54.68 L41.94,54.21 L41.11,53.74 L40.27,53.30 L39.41,52.89 L38.53,52.49 L37.62,52.13 L36.70,51.79 L35.76,51.48 L34.79,51.21 L33.81,50.97 L32.81,50.77 L31.79,50.62 L30.75,50.51 L29.70,50.45 L28.64,50.45 L27.57,50.50 L26.49,50.61 L25.41,50.78 L24.33,51.01 L23.26,51.31 L22.20,51.69 L21.16,52.13 L20.13,52.65 L19.14,53.24 L18.19,53.90 L17.27,54.64 L16.41,55.44 L15.60,56.32 L14.86,57.26 L14.19,58.26 L13.61,59.31 L13.10,60.42 L12.69,61.56 L12.37,62.74 L12.14,63.95 L12.02,65.17 L12.01,66.39 L12.09,67.62 L12.28,68.83 L12.56,70.02 L12.94,71.18 L13.41,72.30 L13.97,73.37 L14.62,74.39 L15.33,75.35 L16.11,76.25 L16.96,77.08 L17.85,77.85 L18.80,78.53 L19.78,79.15 L20.79,79.69 L21.83,80.16 L22.88,80.56 L23.95,80.89 L25.03,81.15 L26.11,81.34 L27.19,81.47 L28.26,81.54 L29.32,81.55 L30.38,81.51 L31.42,81.42 L32.44,81.29 L33.45,81.11 L34.44,80.88 L35.41,80.62 L36.36,80.33 L37.29,80.00 L38.21,79.64 L39.10,79.26 L39.97,78.85 L40.82,78.41 L41.65,77.96 L42.46,77.49 L43.25,77.00 L44.03,76.50 L44.79,75.98 L45.53,75.44 L46.26,74.90 L46.97,74.35 L47.67,73.79 L48.36,73.21 L49.04,72.64 L49.70,72.05 L50.36,71.46 L51.01,70.87 L51.65,70.27 L52.28,69.66 L52.91,69.06 L53.54,68.45 L54.15,67.84 L54.77,67.23 L55.39,66.61 L56.00,66.00 L80.04,41.96" fill="none" stroke="url(#g-bucle-139913654862800-19)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M63.04,41.96 L80.04,41.96 L80.04,58.96" fill="none" stroke="#ff4fa3" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M0,-9 C1,-2 2,-1 9,0 C2,1 1,2 0,9 C-1,2 -2,1 -9,0 C-2,-1 -1,-2 0,-9 Z" transform="translate(50.0,46.0) scale(1.15)" fill="#ffc93c"/></g></svg><small>Finanzas</small></span>
+            <span class="hueco"></span>
+          </div>
+          <figcaption>En la pantalla de inicio</figcaption>
+        </figure>
+        <figure class="pestana">
+          <div class="pestana-barra"><svg viewBox="0 0 120 120" width="16" height="16" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logo Bucle infinito"><rect width="120" height="120" rx="27" fill="#1b1036"/><g transform="translate(60 60) scale(.82) translate(-60 -60)"><defs><linearGradient id="g-bucle-139913654862800-20" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#7c5cff"/><stop offset="1" stop-color="#ff4fa3"/></linearGradient></defs><path d="M96.17,75.94 L95.35,76.79 L94.47,77.58 L93.55,78.30 L92.58,78.94 L91.58,79.51 L90.55,80.00 L89.50,80.43 L88.43,80.78 L87.36,81.06 L86.28,81.28 L85.20,81.43 L84.12,81.52 L83.06,81.56 L82.00,81.53 L80.95,81.46 L79.92,81.34 L78.91,81.17 L77.91,80.97 L76.93,80.72 L75.97,80.44 L75.04,80.12 L74.12,79.77 L73.22,79.40 L72.34,79.00 L71.49,78.57 L70.65,78.13 L69.83,77.66 L69.03,77.18 L68.25,76.68 L67.48,76.16 L66.73,75.64 L66.00,75.10 L65.28,74.55 L64.58,73.99 L63.88,73.42 L63.20,72.84 L62.53,72.26 L61.87,71.67 L61.22,71.08 L60.58,70.48 L59.94,69.88 L59.31,69.27 L58.69,68.67 L58.07,68.06 L57.45,67.45 L56.83,66.83 L56.22,66.22 L55.61,65.61 L54.99,64.99 L54.38,64.38 L53.76,63.77 L53.14,63.16 L52.51,62.55 L51.88,61.95 L51.24,61.35 L50.59,60.75 L49.94,60.16 L49.28,59.57 L48.60,58.99 L47.92,58.42 L47.22,57.85 L46.52,57.30 L45.79,56.75 L45.05,56.21 L44.30,55.69 L43.53,55.18 L42.74,54.68 L41.94,54.21 L41.11,53.74 L40.27,53.30 L39.41,52.89 L38.53,52.49 L37.62,52.13 L36.70,51.79 L35.76,51.48 L34.79,51.21 L33.81,50.97 L32.81,50.77 L31.79,50.62 L30.75,50.51 L29.70,50.45 L28.64,50.45 L27.57,50.50 L26.49,50.61 L25.41,50.78 L24.33,51.01 L23.26,51.31 L22.20,51.69 L21.16,52.13 L20.13,52.65 L19.14,53.24 L18.19,53.90 L17.27,54.64 L16.41,55.44 L15.60,56.32 L14.86,57.26 L14.19,58.26 L13.61,59.31 L13.10,60.42 L12.69,61.56 L12.37,62.74 L12.14,63.95 L12.02,65.17 L12.01,66.39 L12.09,67.62 L12.28,68.83 L12.56,70.02 L12.94,71.18 L13.41,72.30 L13.97,73.37 L14.62,74.39 L15.33,75.35 L16.11,76.25 L16.96,77.08 L17.85,77.85 L18.80,78.53 L19.78,79.15 L20.79,79.69 L21.83,80.16 L22.88,80.56 L23.95,80.89 L25.03,81.15 L26.11,81.34 L27.19,81.47 L28.26,81.54 L29.32,81.55 L30.38,81.51 L31.42,81.42 L32.44,81.29 L33.45,81.11 L34.44,80.88 L35.41,80.62 L36.36,80.33 L37.29,80.00 L38.21,79.64 L39.10,79.26 L39.97,78.85 L40.82,78.41 L41.65,77.96 L42.46,77.49 L43.25,77.00 L44.03,76.50 L44.79,75.98 L45.53,75.44 L46.26,74.90 L46.97,74.35 L47.67,73.79 L48.36,73.21 L49.04,72.64 L49.70,72.05 L50.36,71.46 L51.01,70.87 L51.65,70.27 L52.28,69.66 L52.91,69.06 L53.54,68.45 L54.15,67.84 L54.77,67.23 L55.39,66.61 L56.00,66.00 L80.04,41.96" fill="none" stroke="url(#g-bucle-139913654862800-20)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M63.04,41.96 L80.04,41.96 L80.04,58.96" fill="none" stroke="#ff4fa3" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M0,-9 C1,-2 2,-1 9,0 C2,1 1,2 0,9 C-1,2 -2,1 -9,0 C-2,-1 -1,-2 0,-9 Z" transform="translate(50.0,46.0) scale(1.15)" fill="#ffc93c"/></g></svg><span>Mis Finanzas</span></div>
+          <figcaption>En la pestaña del navegador</figcaption>
+        </figure>
+        <ul class="paleta"><li><span class="chip-color" style="background:#1b1036"></span><span>Uva</span><code>#1b1036</code></li><li><span class="chip-color" style="background:#7c5cff"></span><span>Violeta</span><code>#7c5cff</code></li><li><span class="chip-color" style="background:#ff4fa3"></span><span>Fucsia</span><code>#ff4fa3</code></li><li><span class="chip-color" style="background:#ffc93c"></span><span>Oro</span><code>#ffc93c</code></li></ul>
+      </div>
+      <figure class="figura-maqueta">
+    <div class="maqueta" style="--m-fondo:#1b1036;--m-a:#7c5cff;--m-b:#ff4fa3;--m-c:#ffc93c;--m-claro:#f4f0ff">
+      <div class="m-hero">
+        <div class="m-marca"><svg viewBox="0 0 120 120" width="26" height="26" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logo Bucle infinito"><rect width="120" height="120" rx="27" fill="#1b1036"/><g transform="translate(60 60) scale(.82) translate(-60 -60)"><defs><linearGradient id="g-bucle-139913654862800-21" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#7c5cff"/><stop offset="1" stop-color="#ff4fa3"/></linearGradient></defs><path d="M96.17,75.94 L95.35,76.79 L94.47,77.58 L93.55,78.30 L92.58,78.94 L91.58,79.51 L90.55,80.00 L89.50,80.43 L88.43,80.78 L87.36,81.06 L86.28,81.28 L85.20,81.43 L84.12,81.52 L83.06,81.56 L82.00,81.53 L80.95,81.46 L79.92,81.34 L78.91,81.17 L77.91,80.97 L76.93,80.72 L75.97,80.44 L75.04,80.12 L74.12,79.77 L73.22,79.40 L72.34,79.00 L71.49,78.57 L70.65,78.13 L69.83,77.66 L69.03,77.18 L68.25,76.68 L67.48,76.16 L66.73,75.64 L66.00,75.10 L65.28,74.55 L64.58,73.99 L63.88,73.42 L63.20,72.84 L62.53,72.26 L61.87,71.67 L61.22,71.08 L60.58,70.48 L59.94,69.88 L59.31,69.27 L58.69,68.67 L58.07,68.06 L57.45,67.45 L56.83,66.83 L56.22,66.22 L55.61,65.61 L54.99,64.99 L54.38,64.38 L53.76,63.77 L53.14,63.16 L52.51,62.55 L51.88,61.95 L51.24,61.35 L50.59,60.75 L49.94,60.16 L49.28,59.57 L48.60,58.99 L47.92,58.42 L47.22,57.85 L46.52,57.30 L45.79,56.75 L45.05,56.21 L44.30,55.69 L43.53,55.18 L42.74,54.68 L41.94,54.21 L41.11,53.74 L40.27,53.30 L39.41,52.89 L38.53,52.49 L37.62,52.13 L36.70,51.79 L35.76,51.48 L34.79,51.21 L33.81,50.97 L32.81,50.77 L31.79,50.62 L30.75,50.51 L29.70,50.45 L28.64,50.45 L27.57,50.50 L26.49,50.61 L25.41,50.78 L24.33,51.01 L23.26,51.31 L22.20,51.69 L21.16,52.13 L20.13,52.65 L19.14,53.24 L18.19,53.90 L17.27,54.64 L16.41,55.44 L15.60,56.32 L14.86,57.26 L14.19,58.26 L13.61,59.31 L13.10,60.42 L12.69,61.56 L12.37,62.74 L12.14,63.95 L12.02,65.17 L12.01,66.39 L12.09,67.62 L12.28,68.83 L12.56,70.02 L12.94,71.18 L13.41,72.30 L13.97,73.37 L14.62,74.39 L15.33,75.35 L16.11,76.25 L16.96,77.08 L17.85,77.85 L18.80,78.53 L19.78,79.15 L20.79,79.69 L21.83,80.16 L22.88,80.56 L23.95,80.89 L25.03,81.15 L26.11,81.34 L27.19,81.47 L28.26,81.54 L29.32,81.55 L30.38,81.51 L31.42,81.42 L32.44,81.29 L33.45,81.11 L34.44,80.88 L35.41,80.62 L36.36,80.33 L37.29,80.00 L38.21,79.64 L39.10,79.26 L39.97,78.85 L40.82,78.41 L41.65,77.96 L42.46,77.49 L43.25,77.00 L44.03,76.50 L44.79,75.98 L45.53,75.44 L46.26,74.90 L46.97,74.35 L47.67,73.79 L48.36,73.21 L49.04,72.64 L49.70,72.05 L50.36,71.46 L51.01,70.87 L51.65,70.27 L52.28,69.66 L52.91,69.06 L53.54,68.45 L54.15,67.84 L54.77,67.23 L55.39,66.61 L56.00,66.00 L80.04,41.96" fill="none" stroke="url(#g-bucle-139913654862800-21)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M63.04,41.96 L80.04,41.96 L80.04,58.96" fill="none" stroke="#ff4fa3" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M0,-9 C1,-2 2,-1 9,0 C2,1 1,2 0,9 C-1,2 -2,1 -9,0 C-2,-1 -1,-2 0,-9 Z" transform="translate(50.0,46.0) scale(1.15)" fill="#ffc93c"/></g></svg><span>Mis Finanzas</span></div>
+        <p class="m-etiqueta">Te quedó en octubre</p>
+        <p class="m-cifra">$ 3.799.110</p>
+        <span class="m-pastilla">▲ ahorraste 24%</span>
+      </div>
+      <div class="m-cuerpo">
+        <div class="m-barras"><span style="height:38%;background:#7c5cff"></span><span style="height:62%;background:#ff4fa3"></span><span style="height:84%;background:#ffc93c"></span></div>
+        <span class="m-boton">Registrar gasto</span>
+      </div>
+    </div><figcaption>Así se vería la app</figcaption></figure>
+    </div>
+  </article>
+  <article class="propuesta" id="pulso">
+    <header class="prop-cabecera">
+      <span class="prop-numero">4</span>
+      <div>
+        <h2>Pulso</h2>
+        <p class="idea">Barras que suben unidas por una línea, como un gráfico vivo que termina en un punto dorado que brilla: el control de tus números y la predicción del siguiente mes.</p>
+      </div>
+    </header>
+    <div class="prop-cuerpo">
+      <figure class="icono-grande"><svg viewBox="0 0 120 120" width="168" height="168" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logo Pulso"><rect width="120" height="120" rx="27" fill="#0a1a3f"/><g transform="translate(60 60) scale(.82) translate(-60 -60)"><rect x="24" y="76" width="16" height="20" rx="5" fill="#2f6bff"/><rect x="46" y="60" width="16" height="36" rx="5" fill="#289ff6"/><rect x="68" y="44" width="16" height="52" rx="5" fill="#22d3ee"/><path d="M32,68 L54,52 L76,36 L94,22" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="32" cy="68" r="4.5" fill="#ffffff"/><circle cx="54" cy="52" r="4.5" fill="#ffffff"/><circle cx="76" cy="36" r="4.5" fill="#ffffff"/><circle cx="94" cy="22" r="11" fill="#ffc83d" opacity=".28"/><circle cx="94" cy="22" r="6.5" fill="#ffc83d"/></g></svg><figcaption>Ícono de la app</figcaption></figure>
+      <div class="usos">
+        <figure class="inicio-celular" style="--fondo-celular:linear-gradient(160deg,#eef4ff,#d9dde8)">
+          <div class="celular-iconos">
+            <span class="hueco"></span><span class="hueco"></span>
+            <span class="app"><svg viewBox="0 0 120 120" width="52" height="52" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logo Pulso"><rect width="120" height="120" rx="27" fill="#0a1a3f"/><g transform="translate(60 60) scale(.82) translate(-60 -60)"><rect x="24" y="76" width="16" height="20" rx="5" fill="#2f6bff"/><rect x="46" y="60" width="16" height="36" rx="5" fill="#289ff6"/><rect x="68" y="44" width="16" height="52" rx="5" fill="#22d3ee"/><path d="M32,68 L54,52 L76,36 L94,22" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="32" cy="68" r="4.5" fill="#ffffff"/><circle cx="54" cy="52" r="4.5" fill="#ffffff"/><circle cx="76" cy="36" r="4.5" fill="#ffffff"/><circle cx="94" cy="22" r="11" fill="#ffc83d" opacity=".28"/><circle cx="94" cy="22" r="6.5" fill="#ffc83d"/></g></svg><small>Finanzas</small></span>
+            <span class="hueco"></span>
+          </div>
+          <figcaption>En la pantalla de inicio</figcaption>
+        </figure>
+        <figure class="pestana">
+          <div class="pestana-barra"><svg viewBox="0 0 120 120" width="16" height="16" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logo Pulso"><rect width="120" height="120" rx="27" fill="#0a1a3f"/><g transform="translate(60 60) scale(.82) translate(-60 -60)"><rect x="24" y="76" width="16" height="20" rx="5" fill="#2f6bff"/><rect x="46" y="60" width="16" height="36" rx="5" fill="#289ff6"/><rect x="68" y="44" width="16" height="52" rx="5" fill="#22d3ee"/><path d="M32,68 L54,52 L76,36 L94,22" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="32" cy="68" r="4.5" fill="#ffffff"/><circle cx="54" cy="52" r="4.5" fill="#ffffff"/><circle cx="76" cy="36" r="4.5" fill="#ffffff"/><circle cx="94" cy="22" r="11" fill="#ffc83d" opacity=".28"/><circle cx="94" cy="22" r="6.5" fill="#ffc83d"/></g></svg><span>Mis Finanzas</span></div>
+          <figcaption>En la pestaña del navegador</figcaption>
+        </figure>
+        <ul class="paleta"><li><span class="chip-color" style="background:#0a1a3f"></span><span>Azul noche</span><code>#0a1a3f</code></li><li><span class="chip-color" style="background:#2f6bff"></span><span>Azul eléctrico</span><code>#2f6bff</code></li><li><span class="chip-color" style="background:#22d3ee"></span><span>Aguamarina</span><code>#22d3ee</code></li><li><span class="chip-color" style="background:#ffc83d"></span><span>Oro</span><code>#ffc83d</code></li></ul>
+      </div>
+      <figure class="figura-maqueta">
+    <div class="maqueta" style="--m-fondo:#0a1a3f;--m-a:#2f6bff;--m-b:#22d3ee;--m-c:#ffc83d;--m-claro:#eef4ff">
+      <div class="m-hero">
+        <div class="m-marca"><svg viewBox="0 0 120 120" width="26" height="26" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logo Pulso"><rect width="120" height="120" rx="27" fill="#0a1a3f"/><g transform="translate(60 60) scale(.82) translate(-60 -60)"><rect x="24" y="76" width="16" height="20" rx="5" fill="#2f6bff"/><rect x="46" y="60" width="16" height="36" rx="5" fill="#289ff6"/><rect x="68" y="44" width="16" height="52" rx="5" fill="#22d3ee"/><path d="M32,68 L54,52 L76,36 L94,22" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="32" cy="68" r="4.5" fill="#ffffff"/><circle cx="54" cy="52" r="4.5" fill="#ffffff"/><circle cx="76" cy="36" r="4.5" fill="#ffffff"/><circle cx="94" cy="22" r="11" fill="#ffc83d" opacity=".28"/><circle cx="94" cy="22" r="6.5" fill="#ffc83d"/></g></svg><span>Mis Finanzas</span></div>
+        <p class="m-etiqueta">Te quedó en octubre</p>
+        <p class="m-cifra">$ 3.799.110</p>
+        <span class="m-pastilla">▲ ahorraste 24%</span>
+      </div>
+      <div class="m-cuerpo">
+        <div class="m-barras"><span style="height:38%;background:#2f6bff"></span><span style="height:62%;background:#22d3ee"></span><span style="height:84%;background:#ffc83d"></span></div>
+        <span class="m-boton">Registrar gasto</span>
+      </div>
+    </div><figcaption>Así se vería la app</figcaption></figure>
+    </div>
+  </article>
+  <article class="propuesta" id="gema">
+    <header class="prop-cabecera">
+      <span class="prop-numero">5</span>
+      <div>
+        <h2>Gema</h2>
+        <p class="idea">Una gema facetada representa el valor y la abundancia. Sus caras dibujan una flecha hacia arriba en el centro: cada decisión bien tomada pule tus finanzas.</p>
+      </div>
+    </header>
+    <div class="prop-cuerpo">
+      <figure class="icono-grande"><svg viewBox="0 0 120 120" width="168" height="168" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logo Gema"><rect width="120" height="120" rx="27" fill="#0f2a3d"/><g transform="translate(60 60) scale(.82) translate(-60 -60)"><polygon points="34,30 50,30 40,52" fill="#ffa94d"/><polygon points="34,30 40,52 16,52" fill="#ff6b5a"/><polygon points="50,30 70,30 60,52" fill="#ffd166"/><polygon points="50,30 60,52 40,52" fill="#ffa94d"/><polygon points="70,30 80,52 60,52" fill="#ffa94d"/><polygon points="70,30 86,30 80,52" fill="#ffd166"/><polygon points="86,30 104,52 80,52" fill="#ffa94d"/><polygon points="16,52 40,52 60,100" fill="#ff6b5a"/><polygon points="40,52 60,52 60,100" fill="#e2553f"/><polygon points="60,52 80,52 60,100" fill="#ff6b5a"/><polygon points="80,52 104,52 60,100" fill="#e2553f"/><polygon points="34,30 86,30 104,52 60,100 16,52" fill="none" stroke="#0f2a3d" stroke-width="1.4" stroke-linejoin="round" opacity=".35"/><path d="M48,74 L60,62 L72,74" fill="none" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/><path d="M0,-7 C.8,-1.6 1.6,-.8 7,0 C1.6,.8 .8,1.6 0,7 C-.8,1.6 -1.6,.8 -7,0 C-1.6,-.8 -.8,-1.6 0,-7 Z" transform="translate(98,24)" fill="#ffd166"/></g></svg><figcaption>Ícono de la app</figcaption></figure>
+      <div class="usos">
+        <figure class="inicio-celular" style="--fondo-celular:linear-gradient(160deg,#fff4ec,#d9dde8)">
+          <div class="celular-iconos">
+            <span class="hueco"></span><span class="hueco"></span>
+            <span class="app"><svg viewBox="0 0 120 120" width="52" height="52" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logo Gema"><rect width="120" height="120" rx="27" fill="#0f2a3d"/><g transform="translate(60 60) scale(.82) translate(-60 -60)"><polygon points="34,30 50,30 40,52" fill="#ffa94d"/><polygon points="34,30 40,52 16,52" fill="#ff6b5a"/><polygon points="50,30 70,30 60,52" fill="#ffd166"/><polygon points="50,30 60,52 40,52" fill="#ffa94d"/><polygon points="70,30 80,52 60,52" fill="#ffa94d"/><polygon points="70,30 86,30 80,52" fill="#ffd166"/><polygon points="86,30 104,52 80,52" fill="#ffa94d"/><polygon points="16,52 40,52 60,100" fill="#ff6b5a"/><polygon points="40,52 60,52 60,100" fill="#e2553f"/><polygon points="60,52 80,52 60,100" fill="#ff6b5a"/><polygon points="80,52 104,52 60,100" fill="#e2553f"/><polygon points="34,30 86,30 104,52 60,100 16,52" fill="none" stroke="#0f2a3d" stroke-width="1.4" stroke-linejoin="round" opacity=".35"/><path d="M48,74 L60,62 L72,74" fill="none" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/><path d="M0,-7 C.8,-1.6 1.6,-.8 7,0 C1.6,.8 .8,1.6 0,7 C-.8,1.6 -1.6,.8 -7,0 C-1.6,-.8 -.8,-1.6 0,-7 Z" transform="translate(98,24)" fill="#ffd166"/></g></svg><small>Finanzas</small></span>
+            <span class="hueco"></span>
+          </div>
+          <figcaption>En la pantalla de inicio</figcaption>
+        </figure>
+        <figure class="pestana">
+          <div class="pestana-barra"><svg viewBox="0 0 120 120" width="16" height="16" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logo Gema"><rect width="120" height="120" rx="27" fill="#0f2a3d"/><g transform="translate(60 60) scale(.82) translate(-60 -60)"><polygon points="34,30 50,30 40,52" fill="#ffa94d"/><polygon points="34,30 40,52 16,52" fill="#ff6b5a"/><polygon points="50,30 70,30 60,52" fill="#ffd166"/><polygon points="50,30 60,52 40,52" fill="#ffa94d"/><polygon points="70,30 80,52 60,52" fill="#ffa94d"/><polygon points="70,30 86,30 80,52" fill="#ffd166"/><polygon points="86,30 104,52 80,52" fill="#ffa94d"/><polygon points="16,52 40,52 60,100" fill="#ff6b5a"/><polygon points="40,52 60,52 60,100" fill="#e2553f"/><polygon points="60,52 80,52 60,100" fill="#ff6b5a"/><polygon points="80,52 104,52 60,100" fill="#e2553f"/><polygon points="34,30 86,30 104,52 60,100 16,52" fill="none" stroke="#0f2a3d" stroke-width="1.4" stroke-linejoin="round" opacity=".35"/><path d="M48,74 L60,62 L72,74" fill="none" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/><path d="M0,-7 C.8,-1.6 1.6,-.8 7,0 C1.6,.8 .8,1.6 0,7 C-.8,1.6 -1.6,.8 -7,0 C-1.6,-.8 -.8,-1.6 0,-7 Z" transform="translate(98,24)" fill="#ffd166"/></g></svg><span>Mis Finanzas</span></div>
+          <figcaption>En la pestaña del navegador</figcaption>
+        </figure>
+        <ul class="paleta"><li><span class="chip-color" style="background:#0f2a3d"></span><span>Petróleo</span><code>#0f2a3d</code></li><li><span class="chip-color" style="background:#ff6b5a"></span><span>Coral</span><code>#ff6b5a</code></li><li><span class="chip-color" style="background:#ffa94d"></span><span>Mandarina</span><code>#ffa94d</code></li><li><span class="chip-color" style="background:#ffd166"></span><span>Oro</span><code>#ffd166</code></li></ul>
+      </div>
+      <figure class="figura-maqueta">
+    <div class="maqueta" style="--m-fondo:#0f2a3d;--m-a:#ff6b5a;--m-b:#ffa94d;--m-c:#ffd166;--m-claro:#fff4ec">
+      <div class="m-hero">
+        <div class="m-marca"><svg viewBox="0 0 120 120" width="26" height="26" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logo Gema"><rect width="120" height="120" rx="27" fill="#0f2a3d"/><g transform="translate(60 60) scale(.82) translate(-60 -60)"><polygon points="34,30 50,30 40,52" fill="#ffa94d"/><polygon points="34,30 40,52 16,52" fill="#ff6b5a"/><polygon points="50,30 70,30 60,52" fill="#ffd166"/><polygon points="50,30 60,52 40,52" fill="#ffa94d"/><polygon points="70,30 80,52 60,52" fill="#ffa94d"/><polygon points="70,30 86,30 80,52" fill="#ffd166"/><polygon points="86,30 104,52 80,52" fill="#ffa94d"/><polygon points="16,52 40,52 60,100" fill="#ff6b5a"/><polygon points="40,52 60,52 60,100" fill="#e2553f"/><polygon points="60,52 80,52 60,100" fill="#ff6b5a"/><polygon points="80,52 104,52 60,100" fill="#e2553f"/><polygon points="34,30 86,30 104,52 60,100 16,52" fill="none" stroke="#0f2a3d" stroke-width="1.4" stroke-linejoin="round" opacity=".35"/><path d="M48,74 L60,62 L72,74" fill="none" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/><path d="M0,-7 C.8,-1.6 1.6,-.8 7,0 C1.6,.8 .8,1.6 0,7 C-.8,1.6 -1.6,.8 -7,0 C-1.6,-.8 -.8,-1.6 0,-7 Z" transform="translate(98,24)" fill="#ffd166"/></g></svg><span>Mis Finanzas</span></div>
+        <p class="m-etiqueta">Te quedó en octubre</p>
+        <p class="m-cifra">$ 3.799.110</p>
+        <span class="m-pastilla">▲ ahorraste 24%</span>
+      </div>
+      <div class="m-cuerpo">
+        <div class="m-barras"><span style="height:38%;background:#ff6b5a"></span><span style="height:62%;background:#ffa94d"></span><span style="height:84%;background:#ffd166"></span></div>
+        <span class="m-boton">Registrar gasto</span>
+      </div>
+    </div><figcaption>Así se vería la app</figcaption></figure>
+    </div>
+  </article>
+  <p class="cierre"><strong>¿Cuál te gusta?</strong> Dime el número. También puedes mezclar, por ejemplo el símbolo de una con los colores de otra. Con la que elijas cambio el ícono de la app, sus colores y el estilo de las pantallas.</p>
+</main>
+</body>
+</html>
