@@ -201,6 +201,7 @@ function FormCompromiso({ inicial, onListo }: { inicial?: Compromiso; onListo: (
           <option value="">— Ninguno —</option>
           {datos.categorias
             .filter((c) => c.tipo === 'egreso' && (c.activo || c.id === categoriaId))
+            .sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'))
             .map((c) => (
               <option key={c.id} value={c.id}>
                 {c.nombre}

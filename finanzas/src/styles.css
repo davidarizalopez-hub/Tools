@@ -1189,3 +1189,67 @@ p {
   font-size: 0.875rem;
   overflow-wrap: anywhere;
 }
+
+/* ---------- Selector de tipos (egreso / ingreso) ---------- */
+
+.campo-buscar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 46px;
+  padding: 0 14px;
+  border-radius: 14px;
+  border: 1px dashed color-mix(in srgb, var(--acento) 45%, var(--borde));
+  background: var(--superficie);
+  color: var(--acento);
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+}
+
+/* La hoja de búsqueda conserva su altura mientras se filtra, para que no salte al escribir */
+.hoja:has(.buscador-fijo) {
+  min-height: 75dvh;
+}
+
+.buscador-fijo {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--superficie);
+  box-shadow: 0 6px 12px -6px var(--fondo);
+}
+
+.letra {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--acento);
+  margin: 4px 0 2px;
+}
+
+.opcion-lista {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 48px;
+  padding: 0 4px;
+  background: none;
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+}
+
+.opcion-lista[aria-pressed='true'] {
+  color: var(--acento);
+  font-weight: 700;
+}
+
+.opcion-lista > span:last-child {
+  font-size: 0.8rem;
+  white-space: nowrap;
+}

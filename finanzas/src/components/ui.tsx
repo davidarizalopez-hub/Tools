@@ -1,4 +1,5 @@
-import { useEffect, type ReactNode } from 'react'
+import { useEffect, useRef, type ReactNode } from 'react'
+import { createPortal } from 'react-dom'
 import { Icono } from './Icono'
 import { conMiles, hoy, mesDe, nombreMes, sumarMeses } from '../lib/format'
 
@@ -20,18 +21,27 @@ export function SelectorMes({ mes, setMes }: { mes: string; setMes: (m: string) 
   )
 }
 
-/** Panel que sube desde abajo, para formularios y detalles. */
+/** Hojas abiertas, de la más antigua a la de encima: Escape cierra solo la de encima. */
+const hojasAbiertas: { current: () => void }[] = []
+
+/** Panel que sube desde abajo, para formularios y detalles. Puede abrirse una encima de otra. */
 export function Hoja({ titulo, onCerrar, children }: { titulo: string; onCerrar: () => void; children: ReactNode }) {
+  const cerrar = useRef(onCerrar)
+  cerrar.current = onCerrar
+
   useEffect(() => {
-    const esc = (e: KeyboardEvent) => e.key === 'Escape' && onCerrar()
+    hojasAbiertas.push(cerrar)
+    const esc = (e: KeyboardEvent) => e.key === 'Escape' && hojasAbiertas.at(-1) === cerrar && cerrar.current()
     document.addEventListener('keydown', esc)
     document.body.style.overflow = 'hidden'
     return () => {
+      hojasAbiertas.splice(hojasAbiertas.indexOf(cerrar), 1)
       document.removeEventListener('keydown', esc)
-      document.body.style.overflow = ''
+      if (!hojasAbiertas.length) document.body.style.overflow = ''
     }
-  }, [onCerrar])
-  return (
+  }, [])
+
+  return createPortal(
     <div className="hoja-fondo" onClick={onCerrar}>
       <section className="hoja" role="dialog" aria-modal="true" aria-label={titulo} onClick={(e) => e.stopPropagation()}>
         <header className="hoja-cabecera">
@@ -42,7 +52,8 @@ export function Hoja({ titulo, onCerrar, children }: { titulo: string; onCerrar:
         </header>
         <div className="hoja-cuerpo">{children}</div>
       </section>
-    </div>
+    </div>,
+    document.body,
   )
 }
 

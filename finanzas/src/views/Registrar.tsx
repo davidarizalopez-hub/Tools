@@ -1,6 +1,7 @@
 import { useMemo, useState, type ChangeEvent, type FormEvent } from 'react'
 import { useDatos } from '../state'
 import { CampoValor, Chips, Hoja, Segmentado } from '../components/ui'
+import { SelectorCategoria } from '../components/SelectorCategoria'
 import { LectorComprobantes, type LeidoPrevio } from '../components/LectorComprobantes'
 import { aBorradores, buscarDuplicado, leerComprobante, type Borrador } from '../lib/comprobantes'
 import type { Cliente, Compromiso, Movimiento, TipoMovimiento } from '../lib/types'
@@ -11,8 +12,6 @@ const TIPOS: { valor: TipoMovimiento; etiqueta: string }[] = [
   { valor: 'ingreso', etiqueta: 'Ingreso' },
   { valor: 'transferencia', etiqueta: 'Transferencia' },
 ]
-
-const VISIBLES = 9
 
 /** Ordena por cuántas veces se ha usado cada id en los movimientos. */
 function porUso<T extends { id: string }>(lista: T[], usos: Map<string, number>) {
@@ -48,7 +47,6 @@ export function Registrar({ inicial, borrador, onGuardado }: { inicial?: Movimie
   const [leyendo, setLeyendo] = useState(false)
   const [lote, setLote] = useState<{ archivos: File[]; previos: LeidoPrevio[] } | null>(null)
   const [crearCompromiso, setCrearCompromiso] = useState(true)
-  const [verTodas, setVerTodas] = useState(false)
   const [guardando, setGuardando] = useState(false)
 
   const usos = useMemo(() => {
@@ -73,11 +71,6 @@ export function Registrar({ inicial, borrador, onGuardado }: { inicial?: Movimie
     return [...vistos.values()].sort()
   }, [datos.movimientos])
 
-  const visibles = verTodas ? categorias : categorias.slice(0, VISIBLES)
-  if (categoriaId && !visibles.some((c) => c.id === categoriaId)) {
-    const sel = categorias.find((c) => c.id === categoriaId)
-    if (sel) visibles.push(sel)
-  }
 
   const medio = datos.medios_pago.find((m) => m.id === medioId)
   const esTarjeta = tipo === 'egreso' && medio?.tipo === 'tarjeta_credito'
@@ -229,12 +222,7 @@ export function Registrar({ inicial, borrador, onGuardado }: { inicial?: Movimie
         {tipo !== 'transferencia' && (
           <fieldset className="grupo">
             <legend>{tipo === 'egreso' ? 'Tipo de egreso' : 'Tipo de ingreso'}</legend>
-            <Chips etiqueta="Categoría" opciones={visibles.map((c) => ({ valor: c.id, etiqueta: c.nombre }))} valor={categoriaId} onCambio={setCategoriaId} />
-            {categorias.length > VISIBLES && (
-              <button type="button" className="btn-texto" onClick={() => setVerTodas(!verTodas)}>
-                {verTodas ? 'Ver menos' : `Ver todas (${categorias.length})`}
-              </button>
-            )}
+            <SelectorCategoria tipo={tipo} categorias={categorias} usos={usos} valor={categoriaId} onCambio={setCategoriaId} />
           </fieldset>
         )}
 
