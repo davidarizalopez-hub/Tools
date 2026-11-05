@@ -5,10 +5,12 @@ import { BarraApilada, BarrasHorizontales, ColumnasMeses } from '../components/G
 import { consejos, mesesConDatos, proyectar, resumenMes, saldos, serieMeses, type LineaProyeccion } from '../lib/stats'
 import { hoy, mesDe, nombreMes, pesos, pesosCorto, porcentaje, sumarMeses } from '../lib/format'
 import { ETIQUETA_TIPO_MEDIO } from '../lib/types'
+import { Icono } from '../components/Icono'
 
-type Destino = 'registrar' | 'movimientos' | 'compromisos' | 'ajustes'
+type Destino = 'registrar' | 'movimientos' | 'compromisos' | 'ajustes' | 'revisar'
 
-export function Inicio({ mes, setMes, irA }: { mes: string; setMes: (m: string) => void; irA: (p: Destino) => void }) {
+export function Inicio(props: { mes: string; setMes: (m: string) => void; irA: (p: Destino) => void; porRevisar: number }) {
+  const { mes, setMes, irA, porRevisar } = props
   const { datos } = useDatos()
   const r = useMemo(() => resumenMes(datos, mes), [datos, mes])
   const anterior = useMemo(() => resumenMes(datos, sumarMeses(mes, -1)), [datos, mes])
@@ -25,6 +27,18 @@ export function Inicio({ mes, setMes, irA }: { mes: string; setMes: (m: string) 
         <img src="/logo-simbolo.svg" alt="" />
         <span>Mis Finanzas</span>
       </header>
+      {porRevisar > 0 && (
+        <button className="aviso-bandeja" onClick={() => irA('revisar')}>
+          <span className="aviso-bandeja-icono" aria-hidden="true">
+            ✉️
+          </span>
+          <span className="aviso-bandeja-texto">
+            <strong>{porRevisar === 1 ? '1 movimiento por revisar' : `${porRevisar} movimientos por revisar`}</strong>
+            <span>Los encontré en tus correos. Tú decides cuáles entran.</span>
+          </span>
+          <Icono nombre="derecha" />
+        </button>
+      )}
       <SelectorMes mes={mes} setMes={setMes} />
 
       {r.cantidad === 0 ? (

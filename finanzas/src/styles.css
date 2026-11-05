@@ -1253,3 +1253,68 @@ p {
   font-size: 0.8rem;
   white-space: nowrap;
 }
+
+/* ---------- Bandeja "Por revisar" ---------- */
+
+.aviso-bandeja {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid color-mix(in srgb, var(--acento) 35%, transparent);
+  border-radius: 18px;
+  background:
+    linear-gradient(100deg, color-mix(in srgb, var(--acento) 16%, transparent), color-mix(in srgb, #f0418f 12%, transparent)),
+    var(--superficie);
+  color: var(--texto);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.aviso-bandeja:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--acento) 35%, transparent);
+  outline-offset: 2px;
+}
+
+.aviso-bandeja-icono {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--superficie-2);
+  font-size: 1.2rem;
+}
+
+.aviso-bandeja-texto {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.aviso-bandeja-texto span {
+  color: var(--texto-2);
+  font-size: 0.8rem;
+}
+
+.cabecera-bandeja {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: -8px;
+}
+
+.borrador-extracto {
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: var(--texto-2);
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: var(--superficie-2);
+  overflow-wrap: anywhere;
+}

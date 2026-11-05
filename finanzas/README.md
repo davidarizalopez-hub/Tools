@@ -108,6 +108,24 @@ solo en Supabase, y la app no guarda las imágenes.
 Si la app dice *"Invalid JWT"* al leer un comprobante, entra a la función → **Settings** y desactiva
 **Verify JWT with legacy secret**: la función ya verifica por su cuenta que haya una sesión iniciada.
 
+## Fase 3: movimientos desde tus correos
+
+Los avisos de Bancolombia, los comprobantes de PSE y los pedidos de Rappi que llegan a Gmail se
+convierten en movimientos **propuestos**. Quedan en la bandeja **Por revisar** (se entra desde el
+aviso de Inicio), mes por mes, con el texto del correo al lado para comparar:
+
+- **Guardar los N listos**: guarda de un toque los que están completos y sin dudas.
+- **Revisar**: abre el formulario prellenado para corregir cuenta, tipo o descripción.
+- **Descartar**: lo saca de la bandeja (con *Deshacer*). **Descartar los que ya registraste**
+  limpia los que ya habías anotado a mano o con pantallazo.
+
+Nada entra a tus estadísticas hasta que lo guardas. Los movimientos guardados desde la bandeja
+quedan con origen `correo`.
+
+Si tu base de datos se creó antes de esta fase, vuelve a ejecutar
+[`supabase/schema.sql`](supabase/schema.sql) en el **SQL Editor**: crea la tabla `pendientes` sin
+tocar tus datos.
+
 ## Desarrollo local
 
 ```bash
@@ -135,8 +153,9 @@ finanzas/
 │   ├── seed.ts              catálogos iniciales
 │   ├── stats.ts             resumen del mes, saldos, proyección y consejos
 │   ├── importExcel.ts       lectura del Excel de débitos
-│   └── comprobantes.ts      envío de pantallazos y armado de movimientos
-├── src/views/               pantallas: Inicio, Movimientos, Registrar, Compromisos, Ajustes, Catálogos
+│   ├── comprobantes.ts      envío de pantallazos y armado de movimientos
+│   └── bandeja.ts           bandeja "Por revisar" (movimientos propuestos desde los correos)
+├── src/views/               pantallas: Inicio, Movimientos, Registrar, Compromisos, Ajustes, Catálogos, Bandeja
 ├── diseno/                  propuestas de logo, logos de Higgsfield y el logo final ("Bucle infinito")
 └── src/components/          gráficos y piezas de interfaz
 ```
@@ -146,6 +165,6 @@ finanzas/
 | Fase | Qué agrega | Qué se necesita |
 |------|------------|-----------------|
 | 2 ✅ | **Pantallazos**: subes la foto del comprobante (Nequi, Bancolombia, Daviplata…) y la app llena el movimiento | Ver pasos 5 y 6 |
-| 3 | **Correos de Gmail**: lee los soportes de pago de tu bandeja y los propone como movimientos para que solo los confirmes | Proyecto en Google Cloud con la Gmail API activada (OAuth, solo lectura) |
+| 3 🟡 | **Correos de Gmail**: lee los soportes de pago y los propone como movimientos para que solo los confirmes. Ya está la bandeja *Por revisar*; falta que la app lea los correos nuevos sola | Proyecto en Google Cloud con la Gmail API activada (OAuth, solo lectura) |
 | 4 | **Asesor de fin de mes**: un informe en lenguaje natural sobre tus hábitos y cómo optimizar el ahorro | La misma API key de la fase 2 |
 | — | Registrar sin conexión y sincronizar después | Nada adicional |

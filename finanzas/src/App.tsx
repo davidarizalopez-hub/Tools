@@ -4,16 +4,19 @@ import { crearAlmacen, supabase } from './lib/db'
 import { datosIniciales } from './lib/seed'
 import type { Datos } from './lib/types'
 import { hoy, mesDe } from './lib/format'
-import { ProveedorDatos } from './state'
+import { ProveedorDatos, useDatos } from './state'
 import { Login } from './views/Login'
 import { Inicio } from './views/Inicio'
 import { Movimientos } from './views/Movimientos'
 import { Registrar } from './views/Registrar'
 import { Compromisos } from './views/Compromisos'
 import { Ajustes } from './views/Ajustes'
+import { Bandeja } from './views/Bandeja'
+import { cargarPendientes, type Pendiente } from './lib/bandeja'
 import { Icono, type NombreIcono } from './components/Icono'
 
-type Pestana = 'inicio' | 'movimientos' | 'registrar' | 'compromisos' | 'ajustes'
+/** 'revisar' (la bandeja de correos) no está en la barra: se entra desde Inicio. */
+type Pestana = 'inicio' | 'movimientos' | 'registrar' | 'compromisos' | 'ajustes' | 'revisar'
 
 const PESTANAS: { id: Pestana; etiqueta: string; icono: NombreIcono }[] = [
   { id: 'inicio', etiqueta: 'Inicio', icono: 'inicio' },
@@ -112,15 +115,27 @@ function Aplicacion({ email, aviso }: { email: string | null; aviso: (m: string)
 function Pantallas({ email }: { email: string | null }) {
   const [pestana, setPestana] = useState<Pestana>('inicio')
   const [mes, setMes] = useState(mesDe(hoy()))
+  const { modo } = useDatos()
+  const [pendientes, setPendientes] = useState<Pendiente[]>([])
+
+  useEffect(() => {
+    if (modo !== 'nube') return
+    // Si la tabla aún no existe o no hay conexión, la app sigue funcionando sin bandeja.
+    cargarPendientes()
+      .then(setPendientes)
+      .catch(() => undefined)
+  }, [modo])
+  const porRevisar = pendientes.filter((p) => p.estado === 'pendiente').length
 
   return (
     <div className="app">
       <main className="contenido">
-        {pestana === 'inicio' && <Inicio mes={mes} setMes={setMes} irA={setPestana} />}
+        {pestana === 'inicio' && <Inicio mes={mes} setMes={setMes} irA={setPestana} porRevisar={porRevisar} />}
         {pestana === 'movimientos' && <Movimientos mes={mes} setMes={setMes} />}
         {pestana === 'registrar' && <Registrar onGuardado={() => undefined} />}
         {pestana === 'compromisos' && <Compromisos />}
         {pestana === 'ajustes' && <Ajustes email={email} />}
+        {pestana === 'revisar' && <Bandeja pendientes={pendientes} setPendientes={setPendientes} onVolver={() => setPestana('inicio')} />}
       </main>
       <nav className="barra-nav" aria-label="Secciones">
         {PESTANAS.map((p) => (

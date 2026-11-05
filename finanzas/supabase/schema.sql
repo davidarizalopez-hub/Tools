@@ -79,12 +79,30 @@ create table if not exists public.movimientos (
 
 create index if not exists movimientos_usuario_fecha on public.movimientos (user_id, fecha desc);
 
+-- Bandeja "Por revisar": movimientos propuestos (por ejemplo, desde los correos) que el usuario
+-- guarda, corrige o descarta antes de que entren a sus estadísticas.
+create table if not exists public.pendientes (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null default auth.uid() references auth.users (id) on delete cascade,
+  fuente text not null default 'correo',
+  fuente_id text not null,
+  remitente text,
+  recibido_en timestamptz,
+  datos jsonb not null,
+  estado text not null default 'pendiente' check (estado in ('pendiente', 'guardado', 'descartado')),
+  movimiento_id uuid references public.movimientos (id) on delete set null,
+  created_at timestamptz not null default now(),
+  unique (user_id, fuente, fuente_id)
+);
+
+create index if not exists pendientes_usuario_estado on public.pendientes (user_id, estado);
+
 -- Seguridad: cada usuario solo ve y modifica sus propias filas.
 do $$
 declare
   t text;
 begin
-  foreach t in array array['medios_pago', 'categorias', 'clientes', 'compromisos', 'movimientos'] loop
+  foreach t in array array['medios_pago', 'categorias', 'clientes', 'compromisos', 'movimientos', 'pendientes'] loop
     execute format('alter table public.%I enable row level security', t);
     execute format('drop policy if exists propietario on public.%I', t);
     execute format(

@@ -1,10 +1,11 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDatos } from '../state'
 import { Hoja } from './ui'
+import { TarjetaBorrador } from './TarjetaBorrador'
 import { Registrar } from '../views/Registrar'
 import { aBorradores, buscarDuplicado, construirMovimiento, faltantes, leerComprobante, type Borrador } from '../lib/comprobantes'
 import type { Cliente } from '../lib/types'
-import { fechaLarga, nuevoId, pesos } from '../lib/format'
+import { nuevoId } from '../lib/format'
 
 interface Archivo {
   id: string
@@ -23,8 +24,6 @@ export interface LeidoPrevio {
 
 /** Lecturas simultáneas: suficientes para avanzar rápido sin chocar con el límite de la API. */
 const EN_PARALELO = 2
-
-const ETIQUETA_TIPO = { egreso: 'Gasto', ingreso: 'Ingreso', transferencia: 'Transferencia' } as const
 
 /**
  * Lee varios pantallazos o PDFs de comprobantes y muestra los movimientos encontrados
@@ -61,12 +60,6 @@ export function LectorComprobantes({ archivos, previos = [] }: { archivos: File[
     }
     void Promise.all(Array.from({ length: EN_PARALELO }, trabajador))
   }, [items])
-
-  const nombre = useMemo(() => {
-    const m = new Map<string, string>()
-    for (const l of [datos.categorias, datos.medios_pago]) for (const x of l) m.set(x.id, x.nombre)
-    return (id: string | null) => (id ? (m.get(id) ?? '—') : null)
-  }, [datos])
 
   const todos = items.flatMap((i) => i.borradores)
   const pendientes = todos.filter((b) => !estados[b.clave])
@@ -125,54 +118,18 @@ export function LectorComprobantes({ archivos, previos = [] }: { archivos: File[
 
           {item.borradores.map((b) => {
             const estado = estados[b.clave]
-            const falta = faltantes(b)
-            const dup = estado ? null : duplicado(b)
             return (
-              <div key={b.clave} className={`borrador ${estado ? 'borrador-cerrado' : ''}`}>
-                <div className="borrador-cabecera">
-                  <strong>{ETIQUETA_TIPO[b.tipo]}</strong>
-                  <strong className={`monto monto-${b.tipo}`}>{pesos(b.valor)}</strong>
-                </div>
-                <p className="borrador-detalle">
-                  {[fechaLarga(b.fecha), b.tipo === 'transferencia' ? `${nombre(b.medio_pago_id) ?? '?'} → ${nombre(b.medio_destino_id) ?? '?'}` : nombre(b.medio_pago_id), nombre(b.categoria_id)]
-                    .filter(Boolean)
-                    .join(' · ')}
-                </p>
-                <p className="borrador-detalle muted">{[b.tercero, b.descripcion].filter(Boolean).join(' · ')}</p>
-                {!estado && (dup || falta.length > 0 || b.avisos.length > 0) && (
-                  <ul className="etiquetas">
-                    {dup && <li className="etiqueta-alerta">⚠ Posible duplicado: {dup}</li>}
-                    {falta.length > 0 && <li className="etiqueta-alerta">Falta: {falta.join(', ')}</li>}
-                    {b.avisos.map((a) => (
-                      <li key={a}>{a}</li>
-                    ))}
-                  </ul>
-                )}
-                <div className="acciones">
-                  {estado === 'guardado' ? (
-                    <span className="estado-pagado">✓ Guardado</span>
-                  ) : estado === 'descartado' ? (
-                    <>
-                      <span className="muted">Descartado</span>
-                      <button className="btn-texto" onClick={() => setEstados(({ [b.clave]: _, ...resto }) => resto)}>
-                        Deshacer
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <button className="btn" onClick={() => setRevisando(b)}>
-                        Revisar
-                      </button>
-                      <button className="btn btn-primario" disabled={guardando || falta.length > 0} onClick={() => guardar([b])}>
-                        Guardar
-                      </button>
-                      <button className="btn-texto" onClick={() => setEstados((e) => ({ ...e, [b.clave]: 'descartado' }))}>
-                        Descartar
-                      </button>
-                    </>
-                  )}
-                </div>
-              </div>
+              <TarjetaBorrador
+                key={b.clave}
+                b={b}
+                estado={estado}
+                duplicado={estado ? null : duplicado(b)}
+                ocupado={guardando}
+                onRevisar={() => setRevisando(b)}
+                onGuardar={() => guardar([b])}
+                onDescartar={() => setEstados((e) => ({ ...e, [b.clave]: 'descartado' }))}
+                onDeshacer={() => setEstados(({ [b.clave]: _, ...resto }) => resto)}
+              />
             )
           })}
         </section>

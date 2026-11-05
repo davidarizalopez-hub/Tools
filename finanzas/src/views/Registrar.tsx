@@ -22,7 +22,8 @@ function porUso<T extends { id: string }>(lista: T[], usos: Map<string, number>)
  * Formulario de movimiento. Sin `inicial` ni `borrador` registra uno nuevo; con `inicial`
  * edita uno existente; con `borrador` registra uno nuevo prellenado desde un comprobante.
  */
-export function Registrar({ inicial, borrador, onGuardado }: { inicial?: Movimiento; borrador?: Borrador; onGuardado: () => void }) {
+export function Registrar(props: { inicial?: Movimiento; borrador?: Borrador; onGuardado: (movimiento: Movimiento) => void }) {
+  const { inicial, borrador, onGuardado } = props
   const { datos, modo, agregar, actualizar, aviso } = useDatos()
   const editando = !!inicial
 
@@ -42,7 +43,7 @@ export function Registrar({ inicial, borrador, onGuardado }: { inicial?: Movimie
   const [descripcion, setDescripcion] = useState(inicial?.descripcion ?? borrador?.descripcion ?? '')
   const [cuotas, setCuotas] = useState(String(inicial?.cuotas ?? 1))
   const [comentarios, setComentarios] = useState(inicial?.comentarios ?? borrador?.comentarios ?? '')
-  const [origen, setOrigen] = useState<Movimiento['origen']>(inicial?.origen ?? (borrador ? 'pantallazo' : 'manual'))
+  const [origen, setOrigen] = useState<Movimiento['origen']>(inicial?.origen ?? (borrador ? (borrador.origen ?? 'pantallazo') : 'manual'))
   const [alertas, setAlertas] = useState<string[]>(() => (borrador ? alertasDe(borrador, datos.movimientos) : []))
   const [leyendo, setLeyendo] = useState(false)
   const [lote, setLote] = useState<{ archivos: File[]; previos: LeidoPrevio[] } | null>(null)
@@ -87,7 +88,7 @@ export function Registrar({ inicial, borrador, onGuardado }: { inicial?: Movimie
     setTercero(b.tercero)
     setDescripcion(b.descripcion)
     setComentarios(b.comentarios)
-    setOrigen('pantallazo')
+    setOrigen(b.origen ?? 'pantallazo')
     setAlertas(alertasDe(b, datos.movimientos))
   }
 
@@ -184,7 +185,7 @@ export function Registrar({ inicial, borrador, onGuardado }: { inicial?: Movimie
         setOrigen('manual')
         setAlertas([])
       }
-      onGuardado()
+      onGuardado(mov)
     } catch {
       // el aviso de error ya se mostró
     } finally {

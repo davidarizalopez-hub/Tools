@@ -1,6 +1,6 @@
 import { FunctionsHttpError } from '@supabase/supabase-js'
 import { supabase } from './db'
-import type { Cliente, Datos, Movimiento, TipoMovimiento } from './types'
+import type { Cliente, Datos, Movimiento, Origen, TipoMovimiento } from './types'
 import { fechaLarga, hoy, normalizar, nuevoId, pesos } from './format'
 
 /** Lo que devuelve la función leer-comprobante por cada movimiento encontrado. */
@@ -37,6 +37,8 @@ export interface Borrador {
   comentarios: string
   /** Advertencias de la lectura (confianza, datos que no se vieron). */
   avisos: string[]
+  /** De dónde salió: un pantallazo (por defecto) o un correo. */
+  origen?: Origen
 }
 
 const LADO_MAX = 2000
@@ -100,30 +102,43 @@ export async function leerComprobante(archivo: File, datos: Datos): Promise<Lect
 
 /** Convierte la lectura en borradores, buscando cada nombre en los catálogos del usuario. */
 export function aBorradores(lectura: Lectura, datos: Datos): Borrador[] {
+  return lectura.movimientos.filter((m) => m.valor > 0).map((m) => aBorrador(m, datos))
+}
+
+/**
+ * Convierte un movimiento leído (de un pantallazo o de un correo) en borrador. Los nombres
+ * de medio de pago y tipo de egreso o ingreso se buscan en los catálogos del usuario.
+ */
+export function aBorrador(
+  m: MovimientoLeido & { avisos?: string[] },
+  datos: Datos,
+  opciones: { clave?: string; origen?: Origen } = {},
+): Borrador {
   const buscar = <T extends { id: string; nombre: string }>(lista: T[], nombre: string | null) =>
     nombre ? (lista.find((x) => normalizar(x.nombre) === normalizar(nombre)) ?? null) : null
 
-  return lectura.movimientos
-    .filter((m) => m.valor > 0)
-    .map((m) => {
-      const avisos: string[] = []
-      if (m.confianza !== 'alta') avisos.push(m.confianza === 'baja' ? 'Lectura dudosa: revisa todo' : 'Revisa los datos')
-      if (!m.fecha) avisos.push('No se vio la fecha')
-      const categoria = m.tipo === 'transferencia' ? null : buscar(datos.categorias.filter((c) => c.tipo === m.tipo), m.categoria)
-      return {
-        clave: nuevoId(),
-        tipo: m.tipo,
-        valor: Math.round(m.valor),
-        fecha: m.fecha && m.fecha <= hoy() ? m.fecha : hoy(),
-        medio_pago_id: buscar(datos.medios_pago, m.medio_pago)?.id ?? null,
-        medio_destino_id: m.tipo === 'transferencia' ? (buscar(datos.medios_pago, m.medio_destino)?.id ?? null) : null,
-        categoria_id: categoria?.id ?? null,
-        tercero: m.tercero ?? '',
-        descripcion: m.descripcion,
-        comentarios: m.referencia ? `Ref. ${m.referencia}` : '',
-        avisos,
-      }
-    })
+  const categoria = m.tipo === 'transferencia' ? null : buscar(datos.categorias.filter((c) => c.tipo === m.tipo), m.categoria)
+  const b: Borrador = {
+    clave: opciones.clave ?? nuevoId(),
+    tipo: m.tipo,
+    valor: Math.round(m.valor),
+    fecha: m.fecha && m.fecha <= hoy() ? m.fecha : hoy(),
+    medio_pago_id: buscar(datos.medios_pago, m.medio_pago)?.id ?? null,
+    medio_destino_id: m.tipo === 'transferencia' ? (buscar(datos.medios_pago, m.medio_destino)?.id ?? null) : null,
+    categoria_id: categoria?.id ?? null,
+    tercero: m.tercero ?? '',
+    descripcion: m.descripcion,
+    comentarios: m.referencia ? `Ref. ${m.referencia}` : '',
+    avisos: [],
+    origen: opciones.origen,
+  }
+  // El aviso genérico de confianza media solo se muestra si no hay uno más preciso ni falta nada.
+  const precisos = m.avisos ?? []
+  if (m.confianza === 'baja') b.avisos.push('Lectura dudosa: revisa todo')
+  else if (m.confianza === 'media' && !precisos.length && !faltantes(b).length) b.avisos.push('Revisa los datos')
+  if (!m.fecha) b.avisos.push('No se vio la fecha')
+  b.avisos.push(...precisos)
+  return b
 }
 
 /** Qué le falta al borrador para poder guardarse sin revisión. */
@@ -178,7 +193,7 @@ export function construirMovimiento(b: Borrador, clientes: Cliente[]): { movimie
       descripcion: b.descripcion.trim() || null,
       cuotas: 1,
       comentarios: b.comentarios.trim() || null,
-      origen: 'pantallazo',
+      origen: b.origen ?? 'pantallazo',
     },
   }
 }
