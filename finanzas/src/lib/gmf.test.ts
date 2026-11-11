@@ -116,12 +116,8 @@ describe('recomendarExenta', () => {
 })
 
 describe('mesesParaAnalizar', () => {
-  it('toma hasta 12 meses con movimientos, sin pasar del mes elegido', () => {
-    const movs = Array.from({ length: 15 }, (_, i) => mov({ fecha: `2025-${String((i % 12) + 1).padStart(2, '0')}-05` }))
-    movs.push(mov({ fecha: '2026-11-01' }), mov({ fecha: '2026-12-01' }))
-    const meses = mesesParaAnalizar(datos(movs), '2026-11')
-    expect(meses[0]).toBe('2026-11')
-    expect(meses).toHaveLength(12)
-    expect(meses).not.toContain('2026-12')
+  it('toma solo los meses con movimientos del último año, sin pasar del mes elegido', () => {
+    const movs = ['2025-01-05', '2025-02-05', '2025-11-30', '2025-12-01', '2026-10-05', '2026-11-01', '2026-12-01'].map((fecha) => mov({ fecha }))
+    expect(mesesParaAnalizar(datos(movs), '2026-11')).toEqual(['2026-11', '2026-10', '2025-12'])
   })
 })

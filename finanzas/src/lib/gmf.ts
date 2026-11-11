@@ -1,5 +1,5 @@
 import type { Datos, MedioPago } from './types'
-import { mesDe, normalizar } from './format'
+import { mesDe, normalizar, sumarMeses } from './format'
 
 /**
  * Gravamen a los Movimientos Financieros (4x1000), Estatuto Tributario arts. 871 y 879.
@@ -137,11 +137,14 @@ export function recomendarExenta(datos: Datos, meses: string[]): Recomendacion |
   return { meses, escenarios, actual, mejor, ahorroAnual: actual.anual - mejor.anual, excesos }
 }
 
-/** Los últimos 12 meses con movimientos, hasta el mes dado (incluido). */
+/**
+ * Los meses con movimientos del último año (los 12 meses que terminan en `hasta`). Los meses más
+ * viejos no cuentan: lo que se movía hace dos años no dice cuál cuenta conviene hoy.
+ */
 export function mesesParaAnalizar(datos: Datos, hasta: string): string[] {
+  const desde = sumarMeses(hasta, -11)
   return [...new Set(datos.movimientos.map((m) => mesDe(m.fecha)))]
-    .filter((m) => m <= hasta)
+    .filter((m) => m >= desde && m <= hasta)
     .sort()
     .reverse()
-    .slice(0, 12)
 }

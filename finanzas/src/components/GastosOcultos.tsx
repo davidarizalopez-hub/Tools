@@ -132,7 +132,10 @@ export function GastosOcultos({ mes }: { mes: string }) {
 
 function ConsejoExenta({ rec, onMarcar }: { rec: Recomendacion; onMarcar: (id: string | null) => void }) {
   const { mejor, actual, ahorroAnual, excesos } = rec
-  const periodo = rec.meses.length === 1 ? 'el último mes' : `los últimos ${rec.meses.length} meses con movimientos`
+  const n = rec.meses.length
+  const periodo = n === 1 ? 'tu último mes con movimientos' : `tus ${n} meses con movimientos del último año`
+  // Con pocos meses el cálculo al año es grueso: se avisa.
+  const pocos = n < 3 ? ' Con tan pocos meses registrados es un cálculo aproximado: mejora a medida que registres más.' : ''
   return (
     <>
       {mejor.medio && !mejor.actual && ahorroAnual >= 1000 ? (
@@ -144,7 +147,7 @@ function ConsejoExenta({ rec, onMarcar }: { rec: Recomendacion; onMarcar: (id: s
             <strong>Te conviene que la exenta sea {mejor.medio.nombre}</strong>
             <p>
               Según {periodo}, pagarías unos {pesos(mejor.anual)} de 4x1000 al año en vez de {pesos(actual.anual)}: te ahorras unos {pesos(ahorroAnual)}. Pídelo en tu banco
-              (solo puedes tener una cuenta exenta) y luego avísale a la app.
+              (solo puedes tener una cuenta exenta) y luego avísale a la app.{pocos}
             </p>
             <button className="btn" onClick={() => onMarcar(mejor.medio!.id)}>
               Ya la marqué en el banco
@@ -155,7 +158,7 @@ function ConsejoExenta({ rec, onMarcar }: { rec: Recomendacion; onMarcar: (id: s
         actual.medio &&
         mejor.actual && (
           <p className="estado-pagado">
-            ✓ {actual.medio.nombre} es la cuenta que más te conviene tener exenta. Con ella pagas unos {pesos(actual.anual)} al año.
+            ✓ {actual.medio.nombre} es la cuenta que más te conviene tener exenta. Con ella pagas unos {pesos(actual.anual)} al año.{pocos}
           </p>
         )
       )}
