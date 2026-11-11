@@ -44,6 +44,13 @@ export interface Compromiso {
   saldo_pendiente: number | null
   activo: boolean
   notas: string | null
+  /** Banco o entidad del crédito o la tarjeta (para compararlo con el mercado). */
+  entidad?: string | null
+  /** Tasa de interés en % efectivo anual, si el usuario la conoce. */
+  tasa_ea?: number | null
+  /** Último análisis de mercado (lib/creditos) y cuándo se hizo. */
+  analisis?: import('./creditos').AnalisisCredito | null
+  analizado_en?: string | null
 }
 
 export interface Movimiento {

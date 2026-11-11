@@ -61,7 +61,7 @@ function numerico(fila: any) {
   const f = { ...fila }
   delete f.user_id
   delete f.created_at
-  for (const k of ['valor', 'saldo_inicial', 'monto_cuota', 'saldo_pendiente']) {
+  for (const k of ['valor', 'saldo_inicial', 'monto_cuota', 'saldo_pendiente', 'tasa_ea']) {
     if (typeof f[k] === 'string') f[k] = Number(f[k])
   }
   return f

@@ -126,6 +126,20 @@ Si tu base de datos se creó antes de esta fase, vuelve a ejecutar
 [`supabase/schema.sql`](supabase/schema.sql) en el **SQL Editor**: crea la tabla `pendientes` sin
 tocar tus datos.
 
+## Tasas de tus créditos frente al mercado
+
+En **Compromisos**, los créditos, préstamos y cuotas de tarjeta tienen dos campos más: el **banco o
+entidad** y la **tasa de interés** (E.A. o M.V.; la app la pasa a efectiva anual y muestra cuánto
+pagas de interés al mes). Al guardar uno, la app consulta las tasas del mercado colombiano de ese mes
+(usura, interés bancario corriente y compra de cartera por banco) y te dice si hay una opción que te
+baje la tasa. El resultado queda en la tarjeta del compromiso, con las fuentes. Se vuelve a consultar
+cuando cambias la tasa, el saldo o la entidad, o cuando el último análisis tiene más de 30 días.
+
+La consulta la hace la función `consultar-credito` de Supabase, con Claude y búsqueda web. Usa la
+misma `ANTHROPIC_API_KEY` de la fase 2. Para publicarla, sigue el paso 6 con el nombre
+`consultar-credito` y el archivo [`supabase/functions/consultar-credito/index.ts`](supabase/functions/consultar-credito/index.ts).
+El secreto `MODELO_CREDITOS` (opcional) cambia el modelo; por defecto es `claude-opus-5-5`.
+
 ## Desarrollo local
 
 ```bash
@@ -146,7 +160,8 @@ probarla; luego puedes pasar esos datos a la nube con *Descargar respaldo* y *Re
 finanzas/
 ├── supabase/schema.sql      tablas y políticas de seguridad
 ├── supabase/functions/
-│   └── leer-comprobante/    lee comprobantes con Claude (Edge Function)
+│   ├── leer-comprobante/    lee comprobantes con Claude (Edge Function)
+│   └── consultar-credito/   compara un crédito con las tasas del mercado (Claude + búsqueda web)
 ├── src/lib/
 │   ├── types.ts             modelo de datos
 │   ├── db.ts                guardado en Supabase o en el navegador
@@ -154,6 +169,8 @@ finanzas/
 │   ├── stats.ts             resumen del mes, saldos, proyección y consejos
 │   ├── importExcel.ts       lectura del Excel de débitos
 │   ├── comprobantes.ts      envío de pantallazos y armado de movimientos
+│   ├── creditos.ts          tasas E.A./M.V., interés del mes y consulta del mercado
+│   ├── gmf.ts               4x1000: cálculo por cuenta y recomendación de cuenta exenta
 │   └── bandeja.ts           bandeja "Por revisar" (movimientos propuestos desde los correos)
 ├── src/views/               pantallas: Inicio, Movimientos, Registrar, Compromisos, Ajustes, Catálogos, Bandeja
 ├── diseno/                  propuestas de logo, logos de Higgsfield y el logo final ("Bucle infinito")

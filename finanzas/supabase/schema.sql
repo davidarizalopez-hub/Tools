@@ -79,6 +79,12 @@ create table if not exists public.movimientos (
 
 create index if not exists movimientos_usuario_fecha on public.movimientos (user_id, fecha desc);
 
+-- Créditos y tarjetas: entidad y tasa para compararlos con el mercado, y el último análisis.
+alter table public.compromisos add column if not exists entidad text;
+alter table public.compromisos add column if not exists tasa_ea numeric check (tasa_ea is null or (tasa_ea >= 0 and tasa_ea < 200));
+alter table public.compromisos add column if not exists analisis jsonb;
+alter table public.compromisos add column if not exists analizado_en timestamptz;
+
 -- Cuenta marcada en el banco como exenta del 4x1000 (GMF): solo una por usuario.
 alter table public.medios_pago add column if not exists exenta_gmf boolean not null default false;
 create unique index if not exists medios_pago_una_exenta on public.medios_pago (user_id) where exenta_gmf;
