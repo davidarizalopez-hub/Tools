@@ -79,6 +79,10 @@ create table if not exists public.movimientos (
 
 create index if not exists movimientos_usuario_fecha on public.movimientos (user_id, fecha desc);
 
+-- Cuenta marcada en el banco como exenta del 4x1000 (GMF): solo una por usuario.
+alter table public.medios_pago add column if not exists exenta_gmf boolean not null default false;
+create unique index if not exists medios_pago_una_exenta on public.medios_pago (user_id) where exenta_gmf;
+
 -- Bandeja "Por revisar": movimientos propuestos (por ejemplo, desde los correos) que el usuario
 -- guarda, corrige o descarta antes de que entren a sus estadísticas.
 create table if not exists public.pendientes (

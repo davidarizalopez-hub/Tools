@@ -11,6 +11,8 @@ export interface MedioPago {
   tipo: TipoMedio
   saldo_inicial: number
   activo: boolean
+  /** Marcada en el banco como exenta del 4x1000 (solo una). */
+  exenta_gmf?: boolean
 }
 
 export interface Categoria {

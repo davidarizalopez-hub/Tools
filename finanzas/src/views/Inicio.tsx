@@ -6,6 +6,7 @@ import { consejos, mesesConDatos, proyectar, resumenMes, saldos, serieMeses, typ
 import { hoy, mesDe, nombreMes, pesos, pesosCorto, porcentaje, sumarMeses } from '../lib/format'
 import { ETIQUETA_TIPO_MEDIO } from '../lib/types'
 import { Icono } from '../components/Icono'
+import { GastosOcultos } from '../components/GastosOcultos'
 
 type Destino = 'registrar' | 'movimientos' | 'compromisos' | 'ajustes' | 'revisar'
 
@@ -91,6 +92,8 @@ export function Inicio(props: { mes: string; setMes: (m: string) => void; irA: (
               ]}
             />
           </section>
+
+          <GastosOcultos mes={mes} />
 
           {tips.length > 0 && (
             <section className="tarjeta">

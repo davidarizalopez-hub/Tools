@@ -1,6 +1,7 @@
 import { useMemo, useState, type FormEvent } from 'react'
 import { useDatos } from '../state'
 import { CampoValor, Hoja, Segmentado } from '../components/ui'
+import { pagaGMF } from '../lib/gmf'
 import { ETIQUETA_NATURALEZA, ETIQUETA_TIPO_MEDIO, type Categoria, type Cliente, type MedioPago, type Naturaleza, type TipoMedio } from '../lib/types'
 import { conMiles, leerValor, normalizar, nuevoId } from '../lib/format'
 
@@ -46,7 +47,13 @@ export function Catalogos() {
     const u = (id: string) => usos.get(id) ?? 0
     if (catalogo === 'clientes') return datos.clientes.map((c) => ({ id: c.id, nombre: c.nombre, activo: c.activo, detalle: c.telefono ?? '', usos: u(c.id) }))
     if (catalogo === 'medios')
-      return datos.medios_pago.map((m) => ({ id: m.id, nombre: m.nombre, activo: m.activo, detalle: ETIQUETA_TIPO_MEDIO[m.tipo], usos: u(m.id) }))
+      return datos.medios_pago.map((m) => ({
+        id: m.id,
+        nombre: m.nombre,
+        activo: m.activo,
+        detalle: ETIQUETA_TIPO_MEDIO[m.tipo] + (m.exenta_gmf ? ' · Exenta del 4x1000' : ''),
+        usos: u(m.id),
+      }))
     return datos.categorias
       .filter((c) => c.tipo === catalogo)
       .map((c) => ({ id: c.id, nombre: c.nombre, activo: c.activo, detalle: c.naturaleza ? ETIQUETA_NATURALEZA[c.naturaleza] : '', usos: u(c.id) }))
@@ -120,6 +127,7 @@ function EditorItem({ catalogo, id, usos, onListo }: { catalogo: Catalogo; id: s
   const [notas, setNotas] = useState(cli?.notas ?? '')
   const [tipoMedio, setTipoMedio] = useState<TipoMedio>(med?.tipo ?? 'ahorros')
   const [saldo, setSaldo] = useState(med ? conMiles(Math.abs(med.saldo_inicial)) : '')
+  const [exenta, setExenta] = useState(med?.exenta_gmf ?? false)
 
   const repetido = (n: string) => {
     const lista: { id: string; nombre: string }[] =
@@ -139,7 +147,10 @@ function EditorItem({ catalogo, id, usos, onListo }: { catalogo: Catalogo; id: s
     } else if (catalogo === 'medios') {
       // En una tarjeta de crédito el valor escrito es deuda: se guarda como saldo negativo.
       const s = leerValor(saldo) * (tipoMedio === 'tarjeta_credito' ? -1 : 1)
-      const fila = { nombre: n, activo, tipo: tipoMedio, saldo_inicial: s }
+      const marcada = exenta && pagaGMF({ tipo: tipoMedio })
+      // Solo una cuenta puede ser la exenta: primero se desmarca la anterior.
+      if (marcada) for (const otra of datos.medios_pago.filter((m) => m.exenta_gmf && m.id !== id)) await actualizar('medios_pago', otra.id, { exenta_gmf: false })
+      const fila = { nombre: n, activo, tipo: tipoMedio, saldo_inicial: s, exenta_gmf: marcada }
       if (id) await actualizar('medios_pago', id, fila)
       else await agregar('medios_pago', [{ id: nuevoId(), ...fila }])
     } else {
@@ -205,6 +216,14 @@ function EditorItem({ catalogo, id, usos, onListo }: { catalogo: Catalogo; id: s
           <p className="ayuda">
             Con este valor y tus movimientos, la app calcula cuánto tienes{tipoMedio === 'tarjeta_credito' ? ' (o debes)' : ''} en cada medio de pago.
           </p>
+          {pagaGMF({ tipo: tipoMedio }) && (
+            <label className="check">
+              <input type="checkbox" checked={exenta} onChange={(e) => setExenta(e.target.checked)} />
+              <span>
+                Está marcada en el banco como <b>exenta del 4x1000</b>. Solo puedes tener una; si marcas esta, se desmarca la otra.
+              </span>
+            </label>
+          )}
         </>
       )}
 
